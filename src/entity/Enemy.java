@@ -16,11 +16,12 @@ public class Enemy extends Entity{
     private int speed = 2; // Velocidad de movimiento del enemigo
     private GamePanel gamePanel;
     private Random randomNumbers = new Random();
+    private boolean playerCollision = false;
+    private boolean hasCollided = false;
 
 
     public Enemy(GamePanel gamePanel, int startX, int startY) {
         int numEnemy = randomNumbers.nextInt(5) + 1;
-
 
         this.gamePanel = gamePanel;
         this.worldX = startX;
@@ -36,18 +37,23 @@ public class Enemy extends Entity{
         switch(numEnemy) {
             case 1:
                 speed = 3;
+                damage = 1;
                 break;
             case 2:
                 speed = 1;
+                damage = 10;
                 break;
             case 3:
                 speed = 4;
+                damage = 20;
                 break;
             case 4:
                 speed = 2;
+                damage = 20;
                 break;
             case 5:
                 speed = 5;
+                damage = 10;
                 break;
         }
     }
@@ -108,6 +114,13 @@ public class Enemy extends Entity{
         solidArea.setBounds(worldX + 8, worldY + 8, 32, 32);
 
         checkCollisionWithOtherEnemies();
+        checkCollisionWithPlayer(playerX,playerY);
+
+        if(playerCollision && !hasCollided){
+            gamePanel.player.health -= damage;
+            System.out.println("Player health: " + gamePanel.player.health);
+            hasCollided = true;
+        }
 
         spriteCounter++;
         if(spriteCounter > 10){
@@ -181,6 +194,18 @@ public class Enemy extends Entity{
                     canDown = true;
                 }
             }
+        }
+    }
+
+    public void checkCollisionWithPlayer(int playerX, int playerY) {
+        for (Enemy enemies : gamePanel.enemies) {
+                if (enemies.solidArea.intersects(playerX,playerY, gamePanel.tileSize,gamePanel.tileSize)) {
+                    enemies.playerCollision = true;
+                }
+                else{
+                    enemies.playerCollision = false;
+                    enemies.hasCollided = false;
+                }
         }
     }
 }

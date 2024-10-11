@@ -28,6 +28,7 @@ public class CollisionChecker {
         entity.canUp = true;
         entity.canLeft = true;
         entity.canRight = true;
+        entity.speed = 6;
 
 //        switch(entity.direction){
 //            case "up":
@@ -79,6 +80,9 @@ public class CollisionChecker {
             if (gp.tileManager.tile[tileNum1].collision == true || gp.tileManager.tile[tileNum2].collision == true) {
                 entity.canUp = false;
             }
+            else if (gp.tileManager.tile[tileNum1].slow == true || gp.tileManager.tile[tileNum2].slow == true) {
+                entity.speed = 3;
+            }
         }
 
         if (entity.kh.downPressed) {
@@ -90,6 +94,9 @@ public class CollisionChecker {
             if (gp.tileManager.tile[tileNum1].collision == true || gp.tileManager.tile[tileNum2].collision == true) {
                 entity.canDown = false;
             }
+            else if (gp.tileManager.tile[tileNum1].slow == true || gp.tileManager.tile[tileNum2].slow == true) {
+                entity.speed = 3;
+            }
         }
             if(entity.kh.leftPressed) {
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
@@ -98,6 +105,9 @@ public class CollisionChecker {
 
                 if (gp.tileManager.tile[tileNum1].collision == true || gp.tileManager.tile[tileNum2].collision == true) {
                     entity.canLeft = false;
+                }
+                else if (gp.tileManager.tile[tileNum1].slow == true || gp.tileManager.tile[tileNum2].slow == true) {
+                    entity.speed = 3;
                 }
 
             }
@@ -108,6 +118,9 @@ public class CollisionChecker {
 
                 if (gp.tileManager.tile[tileNum1].collision == true || gp.tileManager.tile[tileNum2].collision == true) {
                     entity.canRight = false;
+                }
+                else if (gp.tileManager.tile[tileNum1].slow == true || gp.tileManager.tile[tileNum2].slow == true) {
+                    entity.speed = 3;
                 }
 
             }

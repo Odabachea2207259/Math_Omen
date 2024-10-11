@@ -92,12 +92,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.update();
 
-        for(Enemy enemy : enemies){
-            enemy.update(player.worldX,player.worldY);
+        synchronized(enemies) {
+            for (Enemy enemy : enemies) {
+                enemy.update(player.worldX, player.worldY);
+            }
         }
 
         scoreCantEnemies.setText(cantEnemies + "");
-        //checkCollision();
     }
 
     public void paintComponent(Graphics g){

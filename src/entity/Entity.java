@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 public class Entity {
     public int worldX, worldY;
     public int speed;
+    public int damage;
+    public int health;
 
     public BufferedImage frame1, frame2, frame3, frame4;
 
