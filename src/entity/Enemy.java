@@ -3,24 +3,22 @@ package entity;
 import main.GamePanel;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class Enemy extends Entity{
 
     private int speed = 2; // Velocidad de movimiento del enemigo
-    private GamePanel gamePanel;
-    private Random randomNumbers = new Random();
+    private final GamePanel gamePanel;
     private boolean playerCollision = false;
     private boolean hasCollided = false;
 
 
     public Enemy(GamePanel gamePanel, int startX, int startY) {
+        Random randomNumbers = new Random();
         int numEnemy = randomNumbers.nextInt(5) + 1;
 
         this.gamePanel = gamePanel;
@@ -40,20 +38,20 @@ public class Enemy extends Entity{
                 damage = 1;
                 break;
             case 2:
-                speed = 1;
+                speed = 2;
                 damage = 10;
                 break;
             case 3:
                 speed = 4;
-                damage = 20;
+                damage = 8;
                 break;
             case 4:
                 speed = 2;
-                damage = 20;
+                damage = 15;
                 break;
             case 5:
                 speed = 5;
-                damage = 10;
+                damage = 6;
                 break;
         }
     }
@@ -61,40 +59,40 @@ public class Enemy extends Entity{
     public void getEnemyImage(int numEnemy){
         try{
             if(numEnemy == 1){
-                frame1 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Mas-0001.png"));
-                frame2 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Mas-0002.png"));
-                frame3 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Mas-0003.png"));
-                frame4 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Mas-0004.png"));
+                frame1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Mas-0001.png")));
+                frame2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Mas-0002.png")));
+                frame3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Mas-0003.png")));
+                frame4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Mas-0004.png")));
             }
             else if(numEnemy == 2){
-                frame1 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Menos-0001.png"));
-                frame2 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Menos-0002.png"));
-                frame3 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Menos-0003.png"));
-                frame4 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Menos-0004.png"));
+                frame1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Menos-0001.png")));
+                frame2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Menos-0002.png")));
+                frame3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Menos-0003.png")));
+                frame4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Menos-0004.png")));
             }
             else if(numEnemy == 3){
-                frame1 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Multiplicacion-0001.png"));
-                frame2 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Multiplicacion-0002.png"));
-                frame3 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Multiplicacion-0003.png"));
-                frame4 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Multiplicacion-0004.png"));
+                frame1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Multiplicacion-0001.png")));
+                frame2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Multiplicacion-0002.png")));
+                frame3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Multiplicacion-0003.png")));
+                frame4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Multiplicacion-0004.png")));
             }
             else if(numEnemy == 4){
-                frame1 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Division-0001.png"));
-                frame2 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Division-0002.png"));
-                frame3 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Division-0003.png"));
-                frame4 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Division-0004.png"));
+                frame1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Division-0001.png")));
+                frame2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Division-0002.png")));
+                frame3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Division-0003.png")));
+                frame4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Division-0004.png")));
             }
             else if(numEnemy == 5){
-                frame1 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Exponente-0001.png"));
-                frame2 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Exponente-0002.png"));
-                frame3 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Exponente-0003.png"));
-                frame4 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Exponente-0004.png"));
+                frame1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Exponente-0001.png")));
+                frame2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Exponente-0002.png")));
+                frame3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Exponente-0003.png")));
+                frame4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Exponente-0004.png")));
             }
             else{
-                frame1 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Mas-0001.png"));
-                frame2 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Mas-0002.png"));
-                frame3 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Mas-0003.png"));
-                frame4 = ImageIO.read(getClass().getResourceAsStream("/Enemies/Mas-0004.png"));
+                frame1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Mas-0001.png")));
+                frame2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Mas-0002.png")));
+                frame3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Mas-0003.png")));
+                frame4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Enemies/Mas-0004.png")));
             }
 
         }catch(IOException e){
@@ -105,27 +103,45 @@ public class Enemy extends Entity{
     // Actualiza la posición del enemigo (por ejemplo, movimiento hacia el jugador)
     public void update(int playerX, int playerY) {
 
+        float deltaX = 0;
+        float deltaY = 0;
 
-        if (worldX < playerX && canRight){ worldX += speed; direction = "right";}
-        if (worldX > playerX && canLeft){worldX -= speed; direction = "left";}
-        if (worldY < playerY && canDown){ worldY += speed; direction = "down";}
-        if (worldY > playerY && canUp){ worldY -= speed; direction = "up";}
+        if (worldX < playerX && canRight) { deltaX = 1; direction = "right"; }
+        if (worldX > playerX && canLeft) { deltaX = -1; direction = "left"; }
+        if (worldY < playerY && canDown) { deltaY = 1; direction = "down"; }
+        if (worldY > playerY && canUp) { deltaY = -1; direction = "up"; }
 
+        // Normalizar el vector de movimiento si se está moviendo en diagonal
+        float length = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        if (length != 0) {
+            deltaX = (deltaX / length) * speed;
+            deltaY = (deltaY / length) * speed;
+        }
+
+        // Actualizar las posiciones del enemigo
+        worldX += (int) deltaX;
+        worldY += (int) deltaY;
+
+        // Actualizar el area solida del enemigo
         solidArea.setBounds(worldX + 8, worldY + 8, 32, 32);
 
+        // Comprobar colisiones
         checkCollisionWithOtherEnemies();
-        checkCollisionWithPlayer(playerX,playerY);
+        checkCollisionWithPlayer(playerX, playerY);
 
-        if(playerCollision && !hasCollided){
+        // Verificar colisión con el jugador
+        if (playerCollision && !hasCollided) {
             gamePanel.player.health -= damage;
+            gamePanel.player.isHealthBarVisible = true;
             System.out.println("Player health: " + gamePanel.player.health);
             hasCollided = true;
         }
 
+        // Actualizar la animación del sprite
         spriteCounter++;
-        if(spriteCounter > 10){
+        if (spriteCounter > 10) {
             spriteNum++;
-            if(spriteNum > 4){
+            if (spriteNum > 4) {
                 spriteNum = 1;
             }
             spriteCounter = 0;
@@ -152,8 +168,9 @@ public class Enemy extends Entity{
     }
 
     // Getters y setters si son necesarios
-    public int getX() { return worldX; }
+    /*public int getX() { return worldX; }
     public int getY() { return worldY; }
+    */
 
     public void checkCollisionWithOtherEnemies() {
         for (Enemy otherEnemy : gamePanel.enemies) {
@@ -208,4 +225,5 @@ public class Enemy extends Entity{
                 }
         }
     }
+
 }

@@ -24,4 +24,9 @@ public class Entity {
     public boolean canLeft = true;
     public boolean canUp = true;
     public boolean canDown = true;
+
+    // Metodo para calcular la distancia a otro Entity
+    /* public double distanceTo(Entity other) {
+        return Math.sqrt(Math.pow(other.worldX - this.worldX, 2) + Math.pow(other.worldY - this.worldY, 2));
+    }*/
 }

@@ -9,37 +9,34 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
-
-    final int originalTileSize = 16; //Tamaño de los elementos
+    //Tamaño de los elementos
+    final int originalTileSize = 16;
     final int scale = 3;
-
-    public final int tileSize = originalTileSize * scale; //48 px x 48 px
-
+    //48 px x 48 px
+    public final int tileSize = originalTileSize * scale;
     //4:3 ratio
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 15;
     public final int screenWidth = tileSize * maxScreenCol; // 768 px
     public final int screenHeight = tileSize * maxScreenRow; // 576 px
-
-    private int multiplicador = 9;
+    // Tamaño del mapa
+    private final int multiplicador = 9;
     public final int maxWorldCol = maxScreenCol * multiplicador;
     public final int maxWorldRow = maxScreenRow * multiplicador;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
-
-    int FPS = 60;
-
+    // Mapa del juego principal.
     TileManager tileManager = new TileManager(this);
     KeyHandler keyHandler = new KeyHandler();
     Random randomNumbers = new Random();
     public CollisionChecker cChecker = new CollisionChecker(this);
-
+    // Hilo del juego principal
     Thread gameThread;
-
-    public Player player = new Player(this,keyHandler);
-
-    public ArrayList<Enemy> enemies = new ArrayList<>();
-
+    int FPS = 60;
+    // Objetos para el juego
+    public Player player = new Player(this,keyHandler); // Jugados
+    public final ArrayList<Enemy> enemies = new ArrayList<>(); // Lista de enemigos.
+    // Label para la cantidad de enemigos.
     JLabel scoreCantEnemies;
     int cantEnemies = 0;
 
@@ -68,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
 
-        double drawInterval = 1000000000/FPS;
+        double drawInterval = (double) 1000000000 /FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -114,13 +111,15 @@ public class GamePanel extends JPanel implements Runnable {
             enemy.draw(g2,player);
         }
 
+        drawPlayerHealthBar(g2);
+
         g2.dispose();
     }
 
     private void startEnemySpawnTimer(GamePanel gp) {
         int delay = 2000;
 
-        Timer enemySpawnTimer = new Timer(delay, e -> {
+        Timer enemySpawnTimer = new Timer(delay, _ -> {
 
             int sign = randomNumbers.nextInt(2);
             int startX = (int) (Math.random() * screenWidth/2);
@@ -149,4 +148,23 @@ public class GamePanel extends JPanel implements Runnable {
         enemySpawnTimer.start();
     }
 
+    private void drawPlayerHealthBar(Graphics2D g2) {
+        if(!player.isHealthBarVisible) return;
+
+        int barWidth = 48; // Ancho de la barra de vida
+        int barHeight = 6; // Altura de la barra de vida
+        int healthWidth = (int) ((player.health / (double) player.maxHealth) * barWidth); // Longitud según la salud
+
+        // Dibuja el fondo de la barra de vida
+        g2.setColor(Color.RED);
+        g2.fillRect(player.screenX - 1, player.screenY - 10, barWidth, barHeight); // Mueve la barra 10 píxeles arriba
+
+        // Dibuja la barra de vida
+        g2.setColor(Color.GREEN);
+        g2.fillRect(player.screenX - 1, player.screenY - 10, healthWidth, barHeight);
+
+        // Dibuja el contorno de la barra de vida
+        g2.setColor(Color.BLACK);
+        g2.drawRect(player.screenX - 1, player.screenY - 10, barWidth, barHeight); // Dibuja el borde
+    }
 }
