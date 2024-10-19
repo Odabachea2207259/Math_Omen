@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * MathOperation
  */
@@ -6,13 +8,26 @@ public class MathOperation {
         OperationGenerator generator = new OperationGenerator();
         int operandsToGen = 2;
 
+        Scanner scan = new Scanner(System.in);
+
         for (int level = 1; level <= 10; level++) {
-            if (level >= 5) {
-                operandsToGen = 3;
-            }
             Operation op = generator.generateOperation(level, operandsToGen);
-            System.out.println("Level " + level + ": " + op);
+            System.out.println("Level " + level + ": " + op + " = ?");
+
+            System.out.print("Respuesta: ");
+            String actual = String.format("%.2f", scan.nextDouble());
+            String expected = String.format("%.2f", op.getResult());
+            if (!actual.equals(expected)) {
+                System.out.println(String.format("\t%.2f", op.getResult()));
+            }
+            else
+            {
+                System.out.println("\t¡Correcto!");
+            }
+            System.out.println();
         }
+        
+        scan.close();
     }
 
 }

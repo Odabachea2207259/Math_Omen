@@ -13,16 +13,6 @@ public class OperationGenerator {
 
         // Change difficulty by level
         for (int i = 0; i < n; i++) {
-            /*
-            if (level <= 3) {
-                operands[i] = generateNumber(10);
-            } else if (level <= 7) {
-                operands[i] = generateNumber(50);
-            } else {
-                operands[i] = generateNumber(100);
-            }
-            */
-
             if (level <= 6) {
                 operands[i] = generateNumber(10);
             } else if (level == 7) {
@@ -30,7 +20,7 @@ public class OperationGenerator {
             } else if (level == 8 || level == 10) {
                 operands[i] = generateNumber(20);
             } else if (level == 9) {
-                operands[i] = rand.nextInt(3);
+                operands[i] = rand.nextInt(4);
             } else {
                 operands[i] = generateNumber(10);
             }

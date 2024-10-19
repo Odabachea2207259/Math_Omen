@@ -46,7 +46,10 @@ public class Operation {
         for (int i = 0; i < operators.length; i++) {
             sb.append(" ").append(operators[i]).append(" ").append(operands[i + 1]);
         }
-        sb.append(" = ").append(result); // Final result
         return sb.toString();
+    }
+
+    public double getResult() {
+        return result;
     }
 }
