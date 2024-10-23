@@ -1,11 +1,14 @@
 package main;
 
 import entity.*;
+import entity.Enemies.EnemyFactory;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -21,37 +24,49 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxScreenCol; // 768 px
     public final int screenHeight = tileSize * maxScreenRow; // 576 px
 
-    private int multiplicador = 9;
+    private final int multiplicador = 9;
     public final int maxWorldCol = maxScreenCol * multiplicador;
     public final int maxWorldRow = maxScreenRow * multiplicador;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
+    //FPS DEL JUEGO
     int FPS = 60;
 
-    TileManager tileManager = new TileManager(this);
-    KeyHandler keyHandler = new KeyHandler();
-    Random randomNumbers = new Random();
-    public CollisionChecker cChecker = new CollisionChecker(this);
+    TileManager tileManager = new TileManager(this); //CONSTRUCTOR MAPA
+    KeyHandler keyHandler = new KeyHandler(this); //MANEJA LAS ENTRADAS DE TECLADO
+    Random randomNumbers = new Random(); //SE NECESITA GG
+    public CollisionChecker cChecker = new CollisionChecker(this); //CHECKA COLISIONES DE JUGADORES Y ENEMIGOS
 
-    Thread gameThread;
+    Thread gameThread; //HILO PRINCIPAL DEL JUEGO
 
-    public Player player = new Player(this,keyHandler);
 
-    public ArrayList<Enemy> enemies = new ArrayList<>();
+    public Player player = new Player(this,keyHandler); //JUGADOR
+    public ArrayList<Enemy> enemies = new ArrayList<>(); //TODOS LOS ENEMIGOS
+    public ArrayList<Projectile> projectileList = new ArrayList<>(); //PROJECTILES ""EN PRUEBA""
+    ArrayList<Entity> entityList = new ArrayList<>();
 
-    JLabel scoreCantEnemies;
+    JLabel scoreCantEnemies; //PARA VER CUANTOS ENEMIGOS EN PANTALLA
     int cantEnemies = 0;
 
+    //COSAS DE LA UI, MENU, JUEGO, PAUSA
+    public UI ui = new UI(this); //UI DEL JUEGO COMPLETO
+    public int gameState;
+    public final int titleState = 0;
+    public final int playState = 1;
+    public final int pauseState = 2;
+
+    //CONSTRUCTOR
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.BLACK);
 
         //Mejorar el rendimiento
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
 
+        setupGame();
         startEnemySpawnTimer(this);
     }
 
@@ -59,8 +74,13 @@ public class GamePanel extends JPanel implements Runnable {
         this.scoreCantEnemies = scoreLabel;
     }
 
-    public void startGameThread(){
+    public void setupGame(){
+        //INICIA PROGRAMA EN EL TITULO
+        gameState = playState;
+    }
 
+    public void startGameThread(){
+        //INICIA HILO DEL JUEGO
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -90,15 +110,39 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update(){
 
-        player.update();
-
-        synchronized(enemies) {
-            for (Enemy enemy : enemies) {
-                enemy.update(player.worldX, player.worldY);
+        //SI EL JUEGO ESTA EN ESTADO PLAY
+        if(gameState == playState){
+            synchronized (player){
+                player.update(); //ACTUALIZAR JUGADOR
             }
+
+            synchronized(enemies) {
+                for (Enemy enemy : enemies) {
+                    enemy.update(player.worldX, player.worldY); //ACTUALIZAR CADA ENEMIGO CON LA UBICACION DEL JUGADOR
+                }
+            }
+
+            //""PRUEBA""
+            synchronized (projectileList) {
+                for (int i = 0; i < projectileList.size(); i++) {
+                    Projectile p = projectileList.get(i);
+                    if(p.alive == true){
+                        p.update();
+                    }
+                    else if(p.alive == false){
+                        projectileList.remove(i);
+                    }
+                }
+            }
+
+            scoreCantEnemies.setText("Cantidad de enemigos: " + cantEnemies + ""); //ACTUALIZA CANT ENEMIGOS
         }
 
-        scoreCantEnemies.setText(cantEnemies + "");
+        //LO QUE HARA SI EL JUEGO ESTA EN PAUSA
+        if(gameState == pauseState){
+            //FALTA IMPLEMENTAR MENU DE PAUSA EN UI
+        }
+
     }
 
     public void paintComponent(Graphics g){
@@ -106,14 +150,50 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        tileManager.draw(g2);
+        //DIBUJAR EL TITULO
+        if(gameState == titleState){
+            ui.draw(g2); // COMO EL GAMESTATE ESTA POR DEFAULT EN TITLESTATE SE DIBUJARA EL TITULO
+        }
+        else{
 
-        player.draw(g2);
+            tileManager.draw(g2); //MAPA
 
-        for(Enemy enemy : enemies){
-            enemy.draw(g2,player);
+            entityList.add(player);
+
+            player.draw(g2); //JUGADOR
+
+            for(Enemy enemy : enemies){
+                entityList.add(enemy);
+                enemy.draw(g2,player); //CADA ENEMIGO
+            }
+
+            for(Projectile p : projectileList){
+                p.draw(g2);
+            }
+
+            Collections.sort(entityList, new Comparator<Entity>() {
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    int result = Integer.compare(e1.worldY,e2.worldY);
+
+                    return result;
+                }
+            });
+
+//            for(Entity entity : entityList){
+//                entity.draw(g2);
+//            }
+
+            entityList.clear();
+
+            for (Projectile projectile : projectileList) {
+                projectile.draw(g2); //LOS PROYECTILES ""EN PRUEBA""
+            }
+
+            ui.draw(g2); //UI
         }
 
+        //BORRA TODO
         g2.dispose();
     }
 
@@ -140,7 +220,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             synchronized (enemies) {
-                enemies.add(new Enemy(gp, startX, startY));
+                enemies.add(EnemyFactory.createRandomEnemy(this, startX, startY));
+
             }
 
             cantEnemies++;
