@@ -220,8 +220,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             synchronized (enemies) {
-                enemies.add(EnemyFactory.createRandomEnemy(this, startX, startY));
-
+                    enemies.add(EnemyFactory.createRandomEnemy(this, startX, startY));
             }
 
             cantEnemies++;

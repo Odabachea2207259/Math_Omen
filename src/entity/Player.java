@@ -98,7 +98,7 @@ public class Player extends Entity {
 
         shootCounter++;
         if(closest != null) {
-            if (shootCounter > 50) {
+            if (shootCounter > 60) {
                 //projectile.set(worldX,worldY,);
                 shoot();
                 shootCounter = 0;
@@ -183,7 +183,7 @@ public class Player extends Entity {
         int indicatorX = playerCenterX + (int)(50 * Math.cos(angulo));
         int indicatorY = playerCenterY + (int)(50 * Math.sin(angulo));
 
-        projectile.set(indicatorX,indicatorY,dx,dy,true,angulo);
+        projectile.set(indicatorX - this.worldX + this.screenX,indicatorY - this.worldY + this.screenY,dx,dy,true,angulo);
         gp.projectileList.add(projectile);
     }
 
