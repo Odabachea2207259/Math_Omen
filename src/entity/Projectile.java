@@ -6,7 +6,8 @@ import java.awt.*;
 
 public class Projectile extends Entity{
 
-    double angulo,magnitud;
+    double angle,magnitud;
+    public Color color;
 
     public Projectile(GamePanel gp) {
         super(gp);
@@ -19,15 +20,15 @@ public class Projectile extends Entity{
         this.dy = dy;
         this.alive = alive;
         this.health = 80;
-        this.angulo = angulo;
+        this.angle = angulo;
 
         magnitud = Math.sqrt(dx*dx+dy*dy);
-        System.out.println("Dx: "+ dx + " Dy: "+ dy + "D: " + magnitud + " Angulo: " + Math.toDegrees(angulo));
+        //System.out.println("Dx: "+ dx + " Dy: "+ dy + "D: " + magnitud + " Angulo: " + Math.toDegrees(angulo));
     }
 
     public void update(){
-        worldX += (int)(dx * speed/magnitud);
-        worldY += (int)(dy * speed/magnitud);
+        worldX += (int)((dx * speed)/magnitud);
+        worldY += (int)((dy * speed)/magnitud);
 
 //        worldX += (int)dx / speed;
 //        worldY += (int)dy / speed;
@@ -40,10 +41,10 @@ public class Projectile extends Entity{
     }
 
     public void draw(Graphics2D g2){
-        g2.setColor(Color.blue);
-        g2.fillOval(worldX,worldY,30,30);
+        g2.setColor(color);
+        g2.fillOval(worldX - gp.player.worldX + gp.player.screenX,worldY - gp.player.worldY + gp.player.screenY,30,30);
 
-        g2.rotate(angulo);
-        g2.rotate(-angulo);
+        g2.rotate(angle);
+        g2.rotate(-angle);
     }
 }

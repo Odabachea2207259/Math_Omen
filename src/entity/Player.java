@@ -39,6 +39,7 @@ public class Player extends Entity {
         worldX = gp.tileSize * 90;
         worldY = gp.tileSize * 65;
 
+        alive = true;
         speed = 14;
         health = 100;
         direction = "up";
@@ -108,6 +109,7 @@ public class Player extends Entity {
         if(this.health <= 0){
             gp.ui.showMessage("YOURE DEAD");
             health = 0;
+            alive = false;
         }
 
     }
@@ -132,22 +134,22 @@ public class Player extends Entity {
 
         AffineTransform old = g2.getTransform();
 
-//        if(closest != null){
-//            g2.setColor(Color.black);
-//
-//            int playerCenterX = screenX + gp.tileSize / 2;
-//            int playerCenterY = screenY + gp.tileSize / 2;
-//
-//            int indicatorX = playerCenterX + (int)(50 * Math.cos(angulo));
-//            int indicatorY = playerCenterY + (int)(50 * Math.sin(angulo));
-//
-//            g2.translate(indicatorX, indicatorY);
-//            g2.rotate(angulo);
-//            g2.fillRect(-5,-5,10,10);
-//            g2.rotate(-angulo);
-//
-//            g2.setTransform(old);
-//        }
+        if(closest != null){
+            g2.setColor(Color.black);
+
+            int playerCenterX = screenX + gp.tileSize / 2;
+            int playerCenterY = screenY + gp.tileSize / 2;
+
+            int indicatorX = playerCenterX + (int)(50 * Math.cos(angulo));
+            int indicatorY = playerCenterY + (int)(50 * Math.sin(angulo));
+
+            g2.translate(indicatorX, indicatorY);
+            g2.rotate(angulo);
+            g2.fillRect(-5,-5,10,10);
+            g2.rotate(-angulo);
+
+            g2.setTransform(old);
+        }
     }
 
     public void checkClosestEnemy() {
@@ -183,7 +185,7 @@ public class Player extends Entity {
         int indicatorX = playerCenterX + (int)(50 * Math.cos(angulo));
         int indicatorY = playerCenterY + (int)(50 * Math.sin(angulo));
 
-        projectile.set(indicatorX - this.worldX + this.screenX,indicatorY - this.worldY + this.screenY,dx,dy,true,angulo);
+        projectile.set(worldX ,worldY,dx,dy,true,angulo);
         gp.projectileList.add(projectile);
     }
 

@@ -113,7 +113,9 @@ public class GamePanel extends JPanel implements Runnable {
         //SI EL JUEGO ESTA EN ESTADO PLAY
         if(gameState == playState){
             synchronized (player){
-                player.update(); //ACTUALIZAR JUGADOR
+                if (player.alive) {
+                    player.update(); //ACTUALIZAR JUGADOR
+                }
             }
 
             synchronized(enemies) {
