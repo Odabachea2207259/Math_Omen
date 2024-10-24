@@ -6,7 +6,6 @@ import objects.OBJ_Bullet;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
 
 public class Player extends Entity {
 
@@ -19,7 +18,6 @@ public class Player extends Entity {
     public Enemy closest = null;
     public double dx,dy,angulo = 0;
     public int bulletX, bulletY;
-    public ArrayList<OBJ_Bullet> bullets = new ArrayList<>();
 
     public int shootCounter = 0;
 
@@ -56,34 +54,34 @@ public class Player extends Entity {
         float deltaY = 0;
 
         if(kh.upPressed && canUp){
-            //deltaY = -1;
-            worldY -= speed;
+            deltaY = -1;
+            //worldY -= speed;
             direction = "up";
         }
         if(kh.downPressed && canDown){
-            //deltaY = 1;
-            worldY += speed;
+            deltaY = 1;
+            //worldY += speed;
             direction = "down";
         }
         if(kh.leftPressed && canLeft){
-            //deltaX = -1;
-            worldX -= speed;
+            deltaX = -1;
+            //worldX -= speed;
             direction = "left";
         }
         if(kh.rightPressed && canRight){
-            //deltaX = 1;
-            worldX += speed;
+            deltaX = 1;
+            //worldX += speed;
             direction = "right";
         }
 
         float length = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         if(length != 0){
-            deltaX = (deltaX / length) * speed;
-            deltaY = (deltaY / length) * speed;
+            deltaX = (deltaX * speed/ length);
+            deltaY = (deltaY * speed/ length);
         }
 
-        //worldX += (int)deltaX;
-        //worldY += (int)deltaY;
+        worldX += (int)deltaX;
+        worldY += (int)deltaY;
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -107,6 +105,7 @@ public class Player extends Entity {
         }
 
         gp.cChecker.checkProjectile(projectile);
+        checkLevelUp();
 
         if(this.health <= 0){
             gp.ui.showMessage("YOURE DEAD");
@@ -192,6 +191,7 @@ public class Player extends Entity {
         if(exp >= nextLevelExp){
             level++;
             nextLevelExp = nextLevelExp * 2;
+            exp = 0;
             health += 25;
             damage++;
         }
