@@ -106,6 +106,8 @@ public class Player extends Entity {
             }
         }
 
+        gp.cChecker.checkProjectile(projectile);
+
         if(this.health <= 0){
             gp.ui.showMessage("YOURE DEAD");
             health = 0;
@@ -168,6 +170,7 @@ public class Player extends Entity {
 
                         bulletX = (int) (this.worldX + 30 * Math.cos(angulo));
                         bulletY = (int) (this.worldY + 30 * Math.sin(angulo));
+                        if(!closest.alive){closest = null;}
                     }
                 }
             }
@@ -178,12 +181,6 @@ public class Player extends Entity {
         dx = closest.worldX - this.worldX;
         dy = closest.worldY - this.worldY;
         angulo = Math.atan2(dy, dx);
-
-        int playerCenterX = screenX + gp.tileSize / 2;
-        int playerCenterY = screenY + gp.tileSize / 2;
-
-        int indicatorX = playerCenterX + (int)(50 * Math.cos(angulo));
-        int indicatorY = playerCenterY + (int)(50 * Math.sin(angulo));
 
         projectile.set(worldX ,worldY,dx,dy,true,angulo);
         gp.projectileList.add(projectile);

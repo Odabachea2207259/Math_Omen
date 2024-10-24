@@ -115,29 +115,48 @@ public class GamePanel extends JPanel implements Runnable {
             synchronized (player){
                 if (player.alive) {
                     player.update(); //ACTUALIZAR JUGADOR
+
                 }
             }
 
-            synchronized(enemies) {
-                for (Enemy enemy : enemies) {
-                    enemy.update(player.worldX, player.worldY); //ACTUALIZAR CADA ENEMIGO CON LA UBICACION DEL JUGADOR
+//            synchronized(enemies) {
+//                for (Enemy enemy : enemies) {
+//                    if (enemy.alive) {
+//                        enemy.update(player.worldX, player.worldY); //ACTUALIZAR CADA ENEMIGO CON LA UBICACION DEL JUGADOR
+//                    }
+//                    else {
+//                        enemies.remove(enemy);
+//                    }
+//                }
+//            }
+
+            synchronized (enemies){
+                for(int i = 0; i < enemies.size(); i++){
+                    Enemy e = enemies.get(i);
+                    if(e.alive){
+                        e.update(player.worldX, player.worldY);
+                    }
+                    else {
+                        enemies.remove(e);
+                    }
                 }
             }
+
 
             //""PRUEBA""
             synchronized (projectileList) {
                 for (int i = 0; i < projectileList.size(); i++) {
                     Projectile p = projectileList.get(i);
-                    if(p.alive == true){
+                    if(p.alive){
                         p.update();
                     }
-                    else if(p.alive == false){
+                    else{
                         projectileList.remove(i);
                     }
                 }
             }
 
-            scoreCantEnemies.setText("Cantidad de enemigos: " + cantEnemies + ""); //ACTUALIZA CANT ENEMIGOS
+            scoreCantEnemies.setText("Cantidad de enemigos: " + enemies.size() + ""); //ACTUALIZA CANT ENEMIGOS
         }
 
         //LO QUE HARA SI EL JUEGO ESTA EN PAUSA
@@ -164,9 +183,11 @@ public class GamePanel extends JPanel implements Runnable {
 
             player.draw(g2); //JUGADOR
 
-            for(Enemy enemy : enemies){
-                entityList.add(enemy);
-                enemy.draw(g2,player); //CADA ENEMIGO
+            synchronized (enemies) {
+                for (Enemy enemy : enemies) {
+                    entityList.add(enemy);
+                    enemy.draw(g2, player); //CADA ENEMIGO
+                }
             }
 
             for(Projectile p : projectileList){
@@ -222,7 +243,9 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             synchronized (enemies) {
-                    enemies.add(EnemyFactory.createRandomEnemy(this, startX, startY));
+                Enemy newEnemy = EnemyFactory.createRandomEnemy(this,startX,startY);
+                enemies.add(newEnemy);
+                System.out.println(newEnemy + "\n");
             }
 
             cantEnemies++;

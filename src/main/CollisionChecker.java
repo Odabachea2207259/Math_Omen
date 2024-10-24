@@ -1,8 +1,8 @@
 package main;
 
 import entity.Enemy;
-import entity.Entity;
 import entity.Player;
+import entity.Projectile;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -38,10 +38,10 @@ public class CollisionChecker {
             tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityTopRow];
             tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityTopRow];
 
-            if (gp.tileManager.tile[tileNum1].collision == true || gp.tileManager.tile[tileNum2].collision == true) {
+            if (gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
                 entity.canUp = false;
             }
-            else if (gp.tileManager.tile[tileNum1].slow == true || gp.tileManager.tile[tileNum2].slow == true) {
+            else if (gp.tileManager.tile[tileNum1].slow || gp.tileManager.tile[tileNum2].slow) {
                 entity.speed = 3;
             }
             else{
@@ -55,10 +55,10 @@ public class CollisionChecker {
             tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
             tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
 
-            if (gp.tileManager.tile[tileNum1].collision == true || gp.tileManager.tile[tileNum2].collision == true) {
+            if (gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
                 entity.canDown = false;
             }
-            else if (gp.tileManager.tile[tileNum1].slow == true || gp.tileManager.tile[tileNum2].slow == true) {
+            else if (gp.tileManager.tile[tileNum1].slow || gp.tileManager.tile[tileNum2].slow) {
                 entity.speed = 3;
             }
         }
@@ -67,10 +67,10 @@ public class CollisionChecker {
                 tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
 
-                if (gp.tileManager.tile[tileNum1].collision == true || gp.tileManager.tile[tileNum2].collision == true) {
+                if (gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
                     entity.canLeft = false;
                 }
-                else if (gp.tileManager.tile[tileNum1].slow == true || gp.tileManager.tile[tileNum2].slow == true) {
+                else if (gp.tileManager.tile[tileNum1].slow || gp.tileManager.tile[tileNum2].slow) {
                     entity.speed = 3;
                 }
 
@@ -80,10 +80,10 @@ public class CollisionChecker {
             tileNum1 = gp.tileManager.mapTileNum[entityRightCol][entityTopRow];
             tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
 
-            if (gp.tileManager.tile[tileNum1].collision == true || gp.tileManager.tile[tileNum2].collision == true) {
+            if (gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
                 entity.canRight = false;
             }
-            else if (gp.tileManager.tile[tileNum1].slow == true || gp.tileManager.tile[tileNum2].slow == true) {
+            else if (gp.tileManager.tile[tileNum1].slow || gp.tileManager.tile[tileNum2].slow) {
                 entity.speed = 3;
             }
         }
@@ -134,13 +134,27 @@ public class CollisionChecker {
     public void checkCollisionWithPlayer(int playerX, int playerY) {
         for (Enemy enemies : gp.enemies) {
             if (enemies.solidArea.intersects(playerX,playerY, gp.tileSize,gp.tileSize)) {
-                if(gp.player.invincible == false) {
+                if(!gp.player.invincible) {
                     gp.player.health -= enemies.damage;
                     gp.player.invincible = true;
                 }
             }
             else{
                 enemies.playerCollision = false;
+            }
+        }
+    }
+
+    public void checkProjectile(Projectile projectile){
+        for(Enemy enemies : gp.enemies){
+            if(projectile.worldX + gp.tileSize/2 > enemies.worldX &&
+               projectile.worldX + gp.tileSize/2 < enemies.worldX + gp.tileSize &&
+               projectile.worldY + gp.tileSize/2 > enemies.worldY &&
+               projectile.worldY + gp.tileSize/2 < enemies.worldY + gp.tileSize &&
+               projectile.canDamage) {
+                enemies.health -= projectile.damage;
+                projectile.alive = false;
+                projectile.canDamage = false;
             }
         }
     }

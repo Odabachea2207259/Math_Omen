@@ -8,6 +8,7 @@ public class Projectile extends Entity{
 
     double angle,magnitud;
     public Color color;
+    public boolean canDamage = true;
 
     public Projectile(GamePanel gp) {
         super(gp);
@@ -29,14 +30,12 @@ public class Projectile extends Entity{
     public void update(){
         worldX += (int)((dx * speed)/magnitud);
         worldY += (int)((dy * speed)/magnitud);
+        canDamage = true;
 
-//        worldX += (int)dx / speed;
-//        worldY += (int)dy / speed;
-
-        //System.out.println(worldX + " " + worldY);
         health--;
         if(health <= 0){
             alive = false;
+            canDamage = false;
         }
     }
 

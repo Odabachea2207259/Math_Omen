@@ -9,9 +9,11 @@ import java.io.IOException;
 public class Multiply extends Enemy {
     public Multiply(GamePanel gamePanel, int startX, int startY) {
         super(gamePanel, startX, startY);
+        this.nombre = "Multiplicación";
         this.speed = 4;
         this.damage = 8;
         this.exp = 3;
+        this.health = 3;
         loadEnemyImages();
     }
 

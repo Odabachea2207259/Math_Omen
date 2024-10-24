@@ -9,9 +9,11 @@ import java.io.IOException;
 public class Division extends Enemy {
     public Division(GamePanel gamePanel, int startX, int startY) {
         super(gamePanel, startX, startY);
+        this.nombre = "Division";
         this.speed = 2;
         this.damage = 15;
         this.exp = 3;
+        this.health = 4;
         loadEnemyImages();
     }
 

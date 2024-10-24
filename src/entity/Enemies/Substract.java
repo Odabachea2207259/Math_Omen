@@ -9,9 +9,11 @@ import java.io.IOException;
 public class Substract extends Enemy {
     public Substract(GamePanel gamePanel, int startX, int startY) {
         super(gamePanel, startX, startY);
+        this.nombre = "Menos";
         this.speed = 2;
         this.damage = 10;
         this.exp = 2;
+        this.health = 5;
         loadEnemyImages();
     }
 

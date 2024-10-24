@@ -9,9 +9,11 @@ import java.io.IOException;
 public class Power extends Enemy {
     public Power(GamePanel gamePanel, int startX, int startY) {
         super(gamePanel, startX, startY);
+        this.nombre = "Exponente";
         this.speed = 5;
         this.damage = 6;
         this.exp = 4;
+        this.health = 1;
         loadEnemyImages();
     }
 

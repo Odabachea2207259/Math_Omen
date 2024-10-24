@@ -1,24 +1,22 @@
 package entity;
 
-import entity.Enemies.*;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Random;
 
 public abstract class Enemy extends Entity{
 
-    protected Random randomNumbers = new Random();
     public boolean playerCollision = false;
+    protected String nombre;
 
     public Enemy(GamePanel gamePanel, int startX, int startY) {
 
         super(gamePanel);
         this.worldX = startX;
         this.worldY = startY;
+        alive = true;
 
         solidArea = new Rectangle(worldX + 8,worldY + 8,32,32);
         solidAreaDefaultX = solidArea.x;
@@ -49,6 +47,11 @@ public abstract class Enemy extends Entity{
             }
             spriteCounter = 0;
         }
+
+        if(health <= 0){
+            alive = false;
+            gp.player.exp += exp;
+        }
     }
 
     public void draw(Graphics2D g2, Player player) {
@@ -70,5 +73,10 @@ public abstract class Enemy extends Entity{
         g2.drawImage(image, worldX - player.worldX + player.screenX, worldY - player.worldY + player.screenY,gp.tileSize,gp.tileSize, null);
         //g2.drawImage(image, worldX - player.worldX, worldY - player.worldY,gp.tileSize,gp.tileSize, null);
 
+    }
+
+    @Override
+    public String toString() {
+        return "Tipo: " + nombre + "\n\tVida: " + health + "\n\tDamage: " + damage + "\n\tExp: " + exp;
     }
 }

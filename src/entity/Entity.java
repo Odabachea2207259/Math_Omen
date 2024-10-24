@@ -16,7 +16,7 @@ public class Entity {
 
     public int worldX, worldY;
     public int speed;
-    public int damage;
+    public int damage = 0;
     public int health;
     public int level;
     public int exp;
@@ -39,36 +39,6 @@ public class Entity {
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public String direction;
-
-//    public void draw(Graphics2D g2){
-//        BufferedImage image = null;
-//        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-//        int screenY = worldY - gp.player.worldY + gp.player.screenY;
-//
-//        if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-//            worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-//            worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-//            worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
-//
-//            switch(direction){
-//                case "up": case "down": case "right":case "left":
-//                    if(spriteNum == 1){
-//                        image = frame1;
-//                    }
-//                    if(spriteNum == 2){
-//                        image = frame2;
-//                    }
-//                    if(spriteNum == 3){
-//                        image = frame3;
-//                    }
-//                    if(spriteNum == 4){
-//                        image = frame4;
-//                    }
-//                    g2.drawImage(image, worldX - gp.player.worldX + gp.player.screenX, worldY - gp.player.worldY + gp.player.screenY,gp.tileSize,gp.tileSize, null);
-//                    break;
-//            }
-//        }
-//    }
 
     public Rectangle solidArea;
     public int solidAreaDefaultX;
