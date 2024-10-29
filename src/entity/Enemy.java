@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public abstract class Enemy extends Entity{
+public abstract class Enemy extends Entity {
 
     public boolean playerCollision = false;
     protected String nombre;
@@ -23,9 +23,6 @@ public abstract class Enemy extends Entity{
         solidAreaDefaultY = solidArea.y;
     }
 
-    protected abstract void loadEnemyImages();
-
-
     // Actualiza la posición del enemigo (por ejemplo, movimiento hacia el jugador)
     public void update(int playerX, int playerY) {
 
@@ -40,7 +37,7 @@ public abstract class Enemy extends Entity{
         gp.cChecker.checkCollisionWithPlayer(playerX,playerY);
 
         spriteCounter++;
-        if(spriteCounter > 8){
+        if(spriteCounter > 6){
             spriteNum++;
             if(spriteNum > 4){
                 spriteNum = 1;
@@ -55,20 +52,7 @@ public abstract class Enemy extends Entity{
     }
 
     public void draw(Graphics2D g2, Player player) {
-        BufferedImage image = null;
-
-        if(spriteNum == 1){
-            image = frame1;
-        }
-        if(spriteNum == 2){
-            image = frame2;
-        }
-        if(spriteNum == 3){
-            image = frame3;
-        }
-        if(spriteNum == 4){
-            image = frame4;
-        }
+        BufferedImage image = frames[spriteNum - 1];
 
         g2.drawImage(image, worldX - player.worldX + player.screenX, worldY - player.worldY + player.screenY,gp.tileSize,gp.tileSize, null);
         //g2.drawImage(image, worldX - player.worldX, worldY - player.worldY,gp.tileSize,gp.tileSize, null);

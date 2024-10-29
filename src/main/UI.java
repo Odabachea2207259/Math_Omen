@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 public class UI {
     GamePanel gp;
-    Font arial_100,arial_40;
+    Font arial_100,arial_40,aladin_100,aladin_40;
     public boolean messageOn = false;
     public String message = "";
     int textLength = 0;
@@ -20,6 +20,8 @@ public class UI {
         arial_100 = new Font("Arial", Font.BOLD, 100);
         arial_40 = new Font("Arial", Font.PLAIN, 40);
 
+        aladin_100 = new Font("Aladin", Font.BOLD, 100);
+        aladin_40 = new Font("Aladin", Font.BOLD, 40);
     }
 
     public void showMessage(String text){
@@ -30,7 +32,7 @@ public class UI {
     public void draw(Graphics2D g2) {
         this.g2 = g2;
 
-        g2.setFont(arial_40);
+        g2.setFont(aladin_100);
         g2.setColor(Color.WHITE);
 
         if(gp.gameState == gp.titleState){
@@ -38,7 +40,7 @@ public class UI {
         }
 
         if(gp.gameState == gp.playState){
-            g2.setFont(arial_100);
+            g2.setFont(aladin_100);
             g2.setColor(Color.RED);
 
             if(messageOn){

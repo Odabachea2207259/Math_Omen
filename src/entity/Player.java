@@ -7,7 +7,7 @@ import objects.OBJ_Bullet;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-public class Player extends Entity {
+public class Player extends Entity implements Attacker {
 
     public KeyHandler kh;
 
@@ -99,7 +99,7 @@ public class Player extends Entity {
         if(closest != null) {
             if (shootCounter > 60) {
                 //projectile.set(worldX,worldY,);
-                shoot();
+                attack();
                 shootCounter = 0;
             }
         }
@@ -174,6 +174,11 @@ public class Player extends Entity {
                 }
             }
         }
+    }
+
+    @Override
+    public void attack() {
+        shoot();
     }
 
     public void shoot() {

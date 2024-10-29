@@ -22,7 +22,7 @@ public class Entity {
     public int exp;
     public int nextLevelExp;
 
-    public BufferedImage frame1, frame2, frame3, frame4;
+    public BufferedImage[] frames = new BufferedImage[4];
 
     public BufferedImage setup(String imagePath){
         BufferedImage image = null;

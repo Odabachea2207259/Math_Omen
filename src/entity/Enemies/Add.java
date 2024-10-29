@@ -1,12 +1,13 @@
 package entity.Enemies;
 
 import entity.Enemy;
+import entity.EnemyImages;
 import main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
-public class Add extends Enemy {
+public class Add extends Enemy implements EnemyImages {
     public Add(GamePanel gamePanel, int startX, int startY) {
         super(gamePanel, startX, startY);
         this.nombre = "Suma";
@@ -18,11 +19,10 @@ public class Add extends Enemy {
     }
 
     @Override
-    protected void loadEnemyImages() {
-
-        frame1 = setup("/Enemies/Mas-0001");
-        frame2 = setup("/Enemies/Mas-0002");
-        frame3 = setup("/Enemies/Mas-0003");
-        frame4 = setup("/Enemies/Mas-0004");
+    public void loadEnemyImages() {
+        frames[0] = setup("/Enemies/Mas-0001");
+        frames[1] = setup("/Enemies/Mas-0002");
+        frames[2] = setup("/Enemies/Mas-0003");
+        frames[3] = setup("/Enemies/Mas-0004");
     }
 }
