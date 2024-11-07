@@ -76,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame(){
         //INICIA PROGRAMA EN EL TITULO
-        gameState = playState;
+        gameState = titleState;
     }
 
     public void startGameThread(){

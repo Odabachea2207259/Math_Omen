@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UI;
 import objects.OBJ_Bullet;
 
 import java.awt.*;
@@ -108,7 +109,7 @@ public class Player extends Entity {
         checkLevelUp();
 
         if(this.health <= 0){
-            gp.ui.showMessage("YOURE DEAD");
+            gp.ui.deadPlayer = true;
             health = 0;
             alive = false;
         }
