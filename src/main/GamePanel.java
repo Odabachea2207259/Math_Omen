@@ -37,10 +37,13 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyHandler = new KeyHandler(this); //MANEJA LAS ENTRADAS DE TECLADO
     Random randomNumbers = new Random(); //SE NECESITA GG
     public CollisionChecker cChecker = new CollisionChecker(this); //CHECKA COLISIONES DE JUGADORES Y ENEMIGOS
+    Sound sound = new Sound();
+    private int currentSongIndex = -1;
 
     Thread gameThread; //HILO PRINCIPAL DEL JUEGO
 
 
+    // Entity
     public Player player = new Player(this,keyHandler); //JUGADOR
     public ArrayList<Enemy> enemies = new ArrayList<>(); //TODOS LOS ENEMIGOS
     public ArrayList<Projectile> projectileList = new ArrayList<>(); //PROJECTILES ""EN PRUEBA""
@@ -77,6 +80,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame(){
         //INICIA PROGRAMA EN EL TITULO
         gameState = titleState;
+        playMusic(2);
     }
 
     public void startGameThread(){
@@ -112,6 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         //SI EL JUEGO ESTA EN ESTADO PLAY
         if(gameState == playState){
+            changeMusic(0);
             synchronized (player){
                 if (player.alive) {
                     player.update(); //ACTUALIZAR JUGADOR
@@ -218,6 +223,30 @@ public class GamePanel extends JPanel implements Runnable {
 
         //BORRA TODO
         g2.dispose();
+    }
+
+    public void playMusic(int i) {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+
+    public void stopMusic() {
+        sound.stop();
+    }
+
+    public void playSounEffect(int i) {
+        sound.setFile(i);
+        sound.play();
+    }
+
+    public void changeMusic(int i) {
+        if (i == currentSongIndex)
+            return; // La cancion ya se esta reproduciendo
+
+        stopMusic();
+        playMusic(i);
+        currentSongIndex = i;
     }
 
     private void startEnemySpawnTimer(GamePanel gp) {

@@ -148,6 +148,7 @@ public class CollisionChecker {
                projectile.worldY + gp.tileSize/2 < enemies.worldY + gp.tileSize &&
                projectile.canDamage) {
                 enemies.health -= projectile.damage;
+                gp.playSounEffect(enemies.growl);
                 projectile.alive = false;
                 projectile.canDamage = false;
             }

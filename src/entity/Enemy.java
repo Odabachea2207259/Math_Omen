@@ -40,7 +40,7 @@ public abstract class Enemy extends Entity{
         gp.cChecker.checkCollisionWithPlayer(playerX,playerY);
 
         spriteCounter++;
-        if(spriteCounter > 8){
+        if(spriteCounter > 6){
             spriteNum++;
             if(spriteNum > 4){
                 spriteNum = 1;

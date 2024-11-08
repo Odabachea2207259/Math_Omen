@@ -21,6 +21,7 @@ public class Entity {
     public int level;
     public int exp;
     public int nextLevelExp;
+    public int growl;
 
     public BufferedImage frame1, frame2, frame3, frame4;
 

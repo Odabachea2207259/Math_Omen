@@ -14,6 +14,7 @@ public class Multiply extends Enemy {
         this.damage = 8;
         this.exp = 3;
         this.health = 3;
+        this.growl = 6;
         loadEnemyImages();
     }
 

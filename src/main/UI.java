@@ -29,10 +29,13 @@ public class UI {
 
         if (gp.gameState == gp.titleState) {
             titleScreen.draw();
+            //gp.playMusic(0);
         } else if (gp.gameState == gp.playState) {
             messageDisplay.draw();
+            //gp.changeMusic(1);
         } else if (gp.gameState == gp.pauseState) {
             pauseScreen.draw();
+            //gp.changeMusic(2);
         }
 
     }

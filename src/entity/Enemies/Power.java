@@ -14,6 +14,7 @@ public class Power extends Enemy {
         this.damage = 6;
         this.exp = 4;
         this.health = 1;
+        this.growl = 7;
         loadEnemyImages();
     }
 

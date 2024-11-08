@@ -14,6 +14,7 @@ public class Add extends Enemy {
         this.damage = 1;
         this.exp = 1;
         this.health = 2;
+        this.growl = 4;
         loadEnemyImages();
     }
 

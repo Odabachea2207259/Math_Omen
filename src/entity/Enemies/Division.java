@@ -14,6 +14,7 @@ public class Division extends Enemy {
         this.damage = 15;
         this.exp = 3;
         this.health = 4;
+        this.growl = 5;
         loadEnemyImages();
     }
 
