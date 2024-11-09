@@ -184,9 +184,12 @@ public class Player extends Entity {
 
         projectile.set(worldX ,worldY,dx,dy,true,angulo);
         gp.projectileList.add(projectile);
+        gp.playSounEffect(9);
     }
 
-
+    public void addExp(int exp) {
+        this.exp += exp;
+    }
 
     public void checkLevelUp(){
         if(exp >= nextLevelExp){

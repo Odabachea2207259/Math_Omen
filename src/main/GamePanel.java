@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyHandler = new KeyHandler(this); //MANEJA LAS ENTRADAS DE TECLADO
     Random randomNumbers = new Random(); //SE NECESITA GG
     public CollisionChecker cChecker = new CollisionChecker(this); //CHECKA COLISIONES DE JUGADORES Y ENEMIGOS
+
     Sound sound = new Sound();
     private int currentSongIndex = -1;
 
@@ -120,7 +121,6 @@ public class GamePanel extends JPanel implements Runnable {
             synchronized (player){
                 if (player.alive) {
                     player.update(); //ACTUALIZAR JUGADOR
-
                 }
             }
 
@@ -140,13 +140,13 @@ public class GamePanel extends JPanel implements Runnable {
                     Enemy e = enemies.get(i);
                     if(e.alive){
                         e.update(player.worldX, player.worldY);
-                    }
-                    else {
+                    } else {
+                        player.addExp(e.getExp());
+                        System.out.println("EXP: " + player.getExp());
                         enemies.remove(e);
                     }
                 }
             }
-
 
             //""PRUEBA""
             synchronized (projectileList) {
@@ -160,7 +160,6 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
-
             scoreCantEnemies.setText("Cantidad de enemigos: " + enemies.size() + ""); //ACTUALIZA CANT ENEMIGOS
         }
 

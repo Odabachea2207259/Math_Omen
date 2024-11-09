@@ -10,18 +10,22 @@ public class Sound {
     URL soundURL[] = new URL[30];
 
     public Sound() {
-        // Canciones
+        /// Canciones
         soundURL[0] = getClass().getResource("/sound/music/Mercury.wav");
         soundURL[1] = getClass().getResource("/sound/music/Map.wav");
         soundURL[2] = getClass().getResource("/sound/music/BossMain.wav");
         soundURL[3] = getClass().getResource("/sound/music/Venus.wav");
 
-        // Efectos
+        /// Efectos
+        // Daño a enemigos
         soundURL[4] = getClass().getResource("/sound/effects/deathb.wav");
         soundURL[5] = getClass().getResource("/sound/effects/deathr.wav");
         soundURL[6] = getClass().getResource("/sound/effects/deaths.wav");
         soundURL[7] = getClass().getResource("/sound/effects/paind.wav");
         soundURL[8] = getClass().getResource("/sound/effects/painr.wav");
+
+        // Proyectiles
+        soundURL[9] = getClass().getResource("/sound/effects/Fire2.wav");
     }
 
     public void setFile(int i) {

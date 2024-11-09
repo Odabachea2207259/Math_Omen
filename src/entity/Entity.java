@@ -37,6 +37,10 @@ public class Entity {
         return image;
     }
 
+    public int getExp() {
+        return exp;
+    }
+
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public String direction;

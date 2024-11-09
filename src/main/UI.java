@@ -9,6 +9,7 @@ public class UI {
 
     public TitleScreen titleScreen;
     public PauseScreen pauseScreen;
+    public OperationScreen operationScreen;
     public MessageDisplay messageDisplay;
 
     public boolean deadPlayer = false;
@@ -21,6 +22,7 @@ public class UI {
         // Inicializar pantallas anidadas
         this.titleScreen = new TitleScreen();
         this.pauseScreen = new PauseScreen();
+        this.operationScreen = new OperationScreen();
         this.messageDisplay = new MessageDisplay();
     }
 
@@ -115,6 +117,14 @@ public class UI {
             int x = getXforCenteredText(text);
             int y = getYforCenteredText(text);
             g2.drawString(text, x, y);
+        }
+    }
+
+    public class OperationScreen {
+        public void draw() {
+            g2.setFont(arial_100);
+            g2.setColor(Color.WHITE);
+
         }
     }
 
