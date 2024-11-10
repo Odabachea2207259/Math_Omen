@@ -20,6 +20,7 @@ public class Player extends Entity {
     public double dx,dy,angulo = 0;
     public int bulletX, bulletY;
 
+    public int maxHealth;
     public int shootCounter = 0;
 
     public Player(GamePanel gp, KeyHandler kh) {
@@ -41,6 +42,8 @@ public class Player extends Entity {
         alive = true;
         speed = 14;
         health = 100;
+        maxHealth = health;
+
         direction = "up";
         exp = 0;
         level = 1;
@@ -192,12 +195,14 @@ public class Player extends Entity {
     }
 
     public void checkLevelUp(){
-        if(exp >= nextLevelExp){
+        if(exp >= 2) {
             level++;
             nextLevelExp = nextLevelExp * 2;
             exp = 0;
-            health += 25;
+            health = maxHealth;
             damage++;
+
+            gp.gameState = GamePanel.operationState;
         }
     }
 }

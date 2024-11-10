@@ -29,17 +29,23 @@ public class UI {
     public void draw(Graphics2D g2) {
         this.g2 = g2;
 
-        if (gp.gameState == gp.titleState) {
-            titleScreen.draw();
-            //gp.playMusic(0);
-        } else if (gp.gameState == gp.playState) {
-            messageDisplay.draw();
-            //gp.changeMusic(1);
-        } else if (gp.gameState == gp.pauseState) {
-            pauseScreen.draw();
-            //gp.changeMusic(2);
+        // Simplified state machine
+        switch (gp.gameState) {
+            case GamePanel.titleState:
+                titleScreen.draw();
+                break;
+            case GamePanel.playState:
+                messageDisplay.draw();
+                break;
+            case GamePanel.pauseState:
+                pauseScreen.draw();
+                break;
+            case GamePanel.operationState:
+                operationScreen.draw();
+                break;
+            default:
+                break;
         }
-
     }
 
     public int getXforCenteredText(String text) {
@@ -124,7 +130,10 @@ public class UI {
         public void draw() {
             g2.setFont(arial_100);
             g2.setColor(Color.WHITE);
-
+            String text = "OPERATION HERE!";
+            int x = getXforCenteredText(text);
+            int y = getYforCenteredText(text);
+            g2.drawString(text, x, y);
         }
     }
 

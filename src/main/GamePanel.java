@@ -56,9 +56,11 @@ public class GamePanel extends JPanel implements Runnable {
     //COSAS DE LA UI, MENU, JUEGO, PAUSA
     public UI ui = new UI(this); //UI DEL JUEGO COMPLETO
     public int gameState;
-    public final int titleState = 0;
-    public final int playState = 1;
-    public final int pauseState = 2;
+
+    public static final int titleState = 0;
+    public static final int playState = 1;
+    public static final int pauseState = 2;
+    public static final int operationState = 3;
 
     //CONSTRUCTOR
     public GamePanel() {
@@ -114,9 +116,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-
         //SI EL JUEGO ESTA EN ESTADO PLAY
-        if(gameState == playState){
+        if(gameState == playState) {
             changeMusic(0);
             synchronized (player){
                 if (player.alive) {
@@ -164,8 +165,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         //LO QUE HARA SI EL JUEGO ESTA EN PAUSA
-        if(gameState == pauseState){
+        if(gameState == pauseState) {
             //FALTA IMPLEMENTAR MENU DE PAUSA EN UI
+            stopMusic();
         }
 
     }
@@ -232,6 +234,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void stopMusic() {
         sound.stop();
+        currentSongIndex = -1;
     }
 
     public void playSounEffect(int i) {

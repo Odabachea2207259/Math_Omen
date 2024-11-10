@@ -17,12 +17,21 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (gp.gameState == gp.titleState) {
-            handleTitleScreenInput(code);
-        } else if (gp.gameState == gp.playState) {
-            handleGamePlayInput(code);
-        } else if (gp.gameState == gp.pauseState) {
-            handlePauseInput(code);
+        switch (gp.gameState) {
+            case GamePanel.titleState:
+                handleTitleScreenInput(code);
+                break;
+            case GamePanel.playState:
+                handleGamePlayInput(code);
+                break;
+            case GamePanel.pauseState:
+                handlePauseInput(code);
+                break;
+            case GamePanel.operationState:
+                handleOperationInput(code);
+                break;
+            default:
+                break;
         }
     }
 
@@ -79,24 +88,32 @@ public class KeyHandler implements KeyListener {
     }
 
     private void handleGamePlayInput(int code) {
-        if (code == KeyEvent.VK_W) {
-            upPressed = true;
-        } else if (code == KeyEvent.VK_S) {
-            downPressed = true;
-        } else if (code == KeyEvent.VK_A) {
-            leftPressed = true;
-        } else if (code == KeyEvent.VK_D) {
-            rightPressed = true;
-        } else if (code == KeyEvent.VK_ESCAPE) {
-            gp.gameState = gp.pauseState;
-        } else if (code == KeyEvent.VK_ENTER) {
-            enterPressed = true;
+        switch (code) {
+            case KeyEvent.VK_W -> upPressed = true;
+            case KeyEvent.VK_S -> downPressed = true;
+            case KeyEvent.VK_A -> leftPressed = true;
+            case KeyEvent.VK_D -> rightPressed = true;
+            case KeyEvent.VK_ESCAPE -> gp.gameState = gp.pauseState;
+            case KeyEvent.VK_ENTER -> enterPressed = true;
         }
     }
 
     private void handlePauseInput(int code) {
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState; // Volver al juego
+        }
+    }
+
+    private void handleOperationInput(int code) {
+        switch (code) {
+            case KeyEvent.VK_W -> upPressed = true;
+            case KeyEvent.VK_S -> downPressed = true;
+            case KeyEvent.VK_A -> leftPressed = true;
+            case KeyEvent.VK_D -> rightPressed = true;
+            case KeyEvent.VK_ENTER -> {
+                enterPressed = true;
+                gp.gameState = gp.playState;
+            }
         }
     }
 
