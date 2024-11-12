@@ -1,6 +1,6 @@
 package entity.Enemies;
 
-import entity.Enemies.*;
+//import entity.Enemies.*;
 import entity.Enemy;
 import main.GamePanel;
 import java.util.Random;

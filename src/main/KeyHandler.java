@@ -1,3 +1,4 @@
+
 package main;
 
 import java.awt.event.KeyEvent;
@@ -6,7 +7,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed,characterPressed;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -76,9 +77,11 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER) {
                 if (titleScreen.commandNum == 0) {
                     // Selección de personaje Boy
+                    characterPressed = false;
                     gp.gameState = gp.playState;
                 } else if (titleScreen.commandNum == 1) {
                     // Selección de personaje Girl
+                    characterPressed = true;
                     gp.gameState = gp.playState;
                 } else if (titleScreen.commandNum == 2) {
                     titleScreen.titleScreenState = 0; // Regresar al menú principal

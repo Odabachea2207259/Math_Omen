@@ -71,8 +71,6 @@ public abstract class Enemy extends Entity{
         }
 
         g2.drawImage(image, worldX - player.worldX + player.screenX, worldY - player.worldY + player.screenY,gp.tileSize,gp.tileSize, null);
-        //g2.drawImage(image, worldX - player.worldX, worldY - player.worldY,gp.tileSize,gp.tileSize, null);
-
     }
 
     @Override

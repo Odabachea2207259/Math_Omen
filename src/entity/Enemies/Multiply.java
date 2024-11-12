@@ -3,8 +3,8 @@ package entity.Enemies;
 import entity.Enemy;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
+//import javax.imageio.ImageIO;
+//import java.io.IOException;
 
 public class Multiply extends Enemy {
     public Multiply(GamePanel gamePanel, int startX, int startY) {

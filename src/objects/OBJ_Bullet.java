@@ -16,6 +16,12 @@ public class OBJ_Bullet extends Projectile {
         health = 80;
         damage = 1;
         alive = false;
+        loadProjectileImages();
         color = new Color(255,0,0);
+
+    }
+
+    public void loadProjectileImages(){
+        image = setup("/projectiles/Bullet");
     }
 }

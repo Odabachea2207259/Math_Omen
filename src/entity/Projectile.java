@@ -3,12 +3,14 @@ package entity;
 import main.GamePanel;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Projectile extends Entity{
 
     double angle,magnitud;
     public Color color;
     public boolean canDamage = true;
+    public BufferedImage image = null;
 
     public Projectile(GamePanel gp) {
         super(gp);
@@ -40,10 +42,13 @@ public class Projectile extends Entity{
     }
 
     public void draw(Graphics2D g2){
-        g2.setColor(color);
-        g2.fillOval(worldX - gp.player.worldX + gp.player.screenX,worldY - gp.player.worldY + gp.player.screenY,30,30);
+        //g2.setColor(color);
+        //g2.fillOval(worldX - gp.player.worldX + gp.player.screenX,worldY - gp.player.worldY + gp.player.screenY,30,30);
 
         g2.rotate(angle);
         g2.rotate(-angle);
+
+        g2.drawImage(image,worldX - gp.player.worldX + gp.player.screenX,worldY - gp.player.worldY + gp.player.screenY,gp.tileSize,gp.tileSize,null);
     }
+
 }
