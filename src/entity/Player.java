@@ -2,10 +2,12 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UI;
 import objects.OBJ_Bullet;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
 
@@ -20,6 +22,10 @@ public class Player extends Entity {
     public int bulletX, bulletY;
 
     public int shootCounter = 0;
+    BufferedImage image = null;
+    public boolean seleccion = false;
+    int time = 0;
+
 
     public Player(GamePanel gp, KeyHandler kh) {
         super(gp);
@@ -44,11 +50,17 @@ public class Player extends Entity {
         exp = 0;
         level = 1;
         nextLevelExp = 25;
+        seleccion = kh.characterPressed;
 
         projectile = new OBJ_Bullet(gp);
     }
 
     public void update(){
+        if(time == 0) {
+            seleccion = kh.characterPressed;
+            loadPlayerImages();
+            time++;
+        }
 
         float deltaX = 0;
         float deltaY = 0;
@@ -104,11 +116,20 @@ public class Player extends Entity {
             }
         }
 
+        spriteCounter++;
+        if(spriteCounter > 8){
+            spriteNum++;
+            if(spriteNum > 4){
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
+        }
+
         gp.cChecker.checkProjectile(projectile);
         checkLevelUp();
 
         if(this.health <= 0){
-            gp.ui.showMessage("YOURE DEAD");
+            gp.ui.deadPlayer = true;
             health = 0;
             alive = false;
         }
@@ -120,10 +141,32 @@ public class Player extends Entity {
 
         g2.setColor(Color.BLACK);
         g2.fillRect(screenX - 28, screenY - 12, 104, 10);
+
+        if(spriteNum == 1){
+            image = frame1;
+        }
+        if(spriteNum == 2){
+            image = frame2;
+        }
+        if(spriteNum == 3){
+            image = frame3;
+        }
+        if(spriteNum == 4){
+            image = frame4;
+        }
+
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
-        g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
+        if(direction.equals("right")) {
+            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
+        else if(direction.equals("left")) {
+            g2.drawImage(image, screenX + gp.tileSize, screenY, -gp.tileSize, gp.tileSize, null);
+        }
+        else{
+            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 
@@ -151,6 +194,8 @@ public class Player extends Entity {
 
             g2.setTransform(old);
         }
+
+        System.out.println("Exp: " + exp + "Next Level: " + nextLevelExp);
     }
 
     public void checkClosestEnemy() {
@@ -194,6 +239,24 @@ public class Player extends Entity {
             exp = 0;
             health += 25;
             damage++;
+
+            gp.gameState = GamePanel.operationState;
+        }
+    }
+
+    protected void loadPlayerImages() {
+
+        if(!seleccion) {
+            frame1 = setup("/player/nino-0001");
+            frame2 = setup("/player/nino-0002");
+            frame3 = setup("/player/nino-0003");
+            frame4 = setup("/player/nino-0004");
+        }
+        else{
+            frame1 = setup("/player/nina-0001");
+            frame2 = setup("/player/nina-0002");
+            frame3 = setup("/player/nina-0003");
+            frame4 = setup("/player/nina-0004");
         }
     }
 }

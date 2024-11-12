@@ -3,8 +3,8 @@ package entity.Enemies;
 import entity.Enemy;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
+//import javax.imageio.ImageIO;
+//import java.io.IOException;
 
 public class Add extends Enemy {
     public Add(GamePanel gamePanel, int startX, int startY) {
@@ -14,6 +14,7 @@ public class Add extends Enemy {
         this.damage = 1;
         this.exp = 1;
         this.health = 2;
+        this.growl = 4;
         loadEnemyImages();
     }
 

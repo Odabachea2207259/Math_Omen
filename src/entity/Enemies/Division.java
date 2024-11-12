@@ -3,8 +3,8 @@ package entity.Enemies;
 import entity.Enemy;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
+//import javax.imageio.ImageIO;
+//import java.io.IOException;
 
 public class Division extends Enemy {
     public Division(GamePanel gamePanel, int startX, int startY) {
@@ -14,6 +14,7 @@ public class Division extends Enemy {
         this.damage = 15;
         this.exp = 3;
         this.health = 4;
+        this.growl = 5;
         loadEnemyImages();
     }
 

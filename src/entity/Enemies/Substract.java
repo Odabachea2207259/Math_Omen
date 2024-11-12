@@ -14,6 +14,7 @@ public class Substract extends Enemy {
         this.damage = 10;
         this.exp = 2;
         this.health = 5;
+        this.growl = 8;
         loadEnemyImages();
     }
 
