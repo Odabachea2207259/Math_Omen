@@ -34,10 +34,10 @@ public class UI {
         this.arial_40 = new Font("Arial", Font.PLAIN, 40);
 
         // Inicializar pantallas anidadas
-        this.titleScreen = new TitleScreen();
-        this.pauseScreen = new PauseScreen();
-        this.operationScreen = new OperationScreen();
-        this.messageDisplay = new MessageDisplay();
+        titleScreen = new TitleScreen();
+        pauseScreen = new PauseScreen();
+        operationScreen = new OperationScreen();
+        messageDisplay = new MessageDisplay();
     }
 
     public void draw(Graphics2D g2) {
@@ -146,11 +146,23 @@ public class UI {
 
     public class OperationScreen {
         public void draw() {
+            int alpha = 127;
+            Color myColour = new Color(0, 0, 0, alpha);
+
             g2.setFont(arial_100);
-            g2.setColor(Color.WHITE);
+            FontMetrics metrics = g2.getFontMetrics(arial_100);
+
+            int textWidth = metrics.stringWidth(op);
+            int textHeight = metrics.getHeight();
+
             int x = getXforCenteredText(op);
             int y = getYforCenteredText(op);
-            g2.drawString(op, x, y);
+
+            g2.setColor(myColour);
+            g2.fillRect(x - 10, y, textWidth + 20, textHeight * 2);
+
+            g2.setColor(Color.WHITE);
+            g2.drawString(op, x, y + metrics.getAscent());
         }
     }
 
