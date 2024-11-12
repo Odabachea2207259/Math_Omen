@@ -202,6 +202,7 @@ public class Player extends Entity {
             health = maxHealth;
             damage++;
 
+            gp.ui.setFoo(0);
             gp.gameState = GamePanel.operationState;
         }
     }

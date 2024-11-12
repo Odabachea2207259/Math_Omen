@@ -1,6 +1,10 @@
 package main;
 
+import OperationGenerator.OperationGenerator;
+import OperationGenerator.Operation;
+
 import java.awt.*;
+import java.util.Scanner;
 
 public class UI {
     public GamePanel gp;
@@ -11,6 +15,16 @@ public class UI {
     public PauseScreen pauseScreen;
     public OperationScreen operationScreen;
     public MessageDisplay messageDisplay;
+
+    OperationGenerator generator = new OperationGenerator();
+    int operandsToGen = 2;
+    String op;
+
+    int foo = 0;
+
+    public void setFoo(int foo) {
+        this.foo = foo;
+    }
 
     public boolean deadPlayer = false;
 
@@ -41,6 +55,10 @@ public class UI {
                 pauseScreen.draw();
                 break;
             case GamePanel.operationState:
+                if (foo == 0) {
+                    op = generator.generateOperation(1, operandsToGen).toString();
+                    foo++;
+                }
                 operationScreen.draw();
                 break;
             default:
@@ -130,10 +148,9 @@ public class UI {
         public void draw() {
             g2.setFont(arial_100);
             g2.setColor(Color.WHITE);
-            String text = "OPERATION HERE!";
-            int x = getXforCenteredText(text);
-            int y = getYforCenteredText(text);
-            g2.drawString(text, x, y);
+            int x = getXforCenteredText(op);
+            int y = getYforCenteredText(op);
+            g2.drawString(op, x, y);
         }
     }
 
