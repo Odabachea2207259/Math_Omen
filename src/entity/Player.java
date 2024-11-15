@@ -173,8 +173,27 @@ public class Player extends Entity {
 
         //System.out.println("Vida Maxima: " + maxHealth + "Vida Actual: " + health);
 
-        int healthWidth = (int)((health / (float)maxHealth) * 100);
+        // Barra de experiencia
+        g2.setColor(Color.BLACK);
+        g2.fillRect(10, 0, gp.screenWidth - 18, 20);  // x, y, ancho, alto
 
+
+        // Dibuja la barra de experiencia (azul)
+        // Calcula el porcentaje
+        int anchoBarra = (int)((float)exp / nextLevelExp * 200);
+        g2.setColor(Color.getHSBColor(200f / 360f,0.7f, 0.90f));
+        g2.fillRect(10, 0, anchoBarra, 20);  // x, y, ancho variable, alto
+
+        // Borde de la barra
+        g2.setColor(Color.YELLOW);  // Color del borde
+        g2.drawRect(8, 0, gp.screenWidth - 16, 20);  // x, y, ancho, alto (tamaño del borde)
+
+        // Opcional: Añadir texto para mostrar la experiencia
+        g2.setColor(Color.WHITE);
+        g2.drawString("Exp: " + exp + "/" + nextLevelExp, gp.screenWidth / 2, 15);
+
+        // Calculo para la exp
+        int healthWidth = (int)((health / (float)maxHealth) * 100);
         g2.setColor(Color.RED);
         g2.fillRect(screenX - 26, screenY - 10, 100, 6);
         g2.setColor(Color.green);
@@ -237,7 +256,7 @@ public class Player extends Entity {
 
 
     public void checkLevelUp(){
-        if(exp >= 1){
+        if(exp >= nextLevelExp){
             level++;
             nextLevelExp = nextLevelExp * 2;
             exp = 0;
