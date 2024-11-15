@@ -30,6 +30,9 @@ public class KeyHandler implements KeyListener {
             case GamePanel.operationState:
                 handleOperationInput(code);
                 break;
+            case GamePanel.characterState:
+                handleCharacterState(code);
+                break;
             default:
                 break;
         }
@@ -105,6 +108,7 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_D -> rightPressed = true;
             case KeyEvent.VK_ESCAPE -> gp.gameState = gp.pauseState;
             case KeyEvent.VK_ENTER -> enterPressed = true;
+            case KeyEvent.VK_C -> gp.gameState = gp.characterState;
         }
     }
 
@@ -113,6 +117,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState; // Volver al juego
         }
+        if(pauseScreen.pauseScreenState == 0) {
             switch (code) {
                 case KeyEvent.VK_W -> {
                     if (pauseScreen.selectedOption > 0) {
@@ -129,6 +134,9 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_ENTER -> {
                     switch (pauseScreen.selectedOption) {
                         case 0 -> gp.gameState = gp.playState;
+                        case 1 -> {
+                            pauseScreen.selectedOption = 0;
+                            pauseScreen.pauseScreenState = 1;}
                         case 2 -> {
                             gp.player.time = 0;
                             gp.ui.titleScreen.titleScreenState = 0;
@@ -137,7 +145,47 @@ public class KeyHandler implements KeyListener {
                     }
                 }
             }
+        } else if(pauseScreen.pauseScreenState == 1) {
+            switch (code) {
+                case KeyEvent.VK_W -> {
+                    if (pauseScreen.selectedOption > 0) {
+                        pauseScreen.selectedOption--;
+                        gp.playSoundEffect(10);
+                    }
+                }
+                case KeyEvent.VK_S -> {
+                    if (pauseScreen.selectedOption < 2) {
+                        pauseScreen.selectedOption++;
+                        gp.playSoundEffect(10);
+                    }
+                }
 
+                case KeyEvent.VK_A -> {
+                    if(pauseScreen.selectedOption == 0 && gp.backgroundMusic.volumeScale > 0) {
+                        gp.backgroundMusic.volumeScale--;
+                        gp.backgroundMusic.checkVolume();
+                    }
+                }
+                case KeyEvent.VK_D -> {
+                    if(pauseScreen.selectedOption == 0 && gp.backgroundMusic.volumeScale < 5) {
+                        gp.backgroundMusic.volumeScale++;
+                        gp.backgroundMusic.checkVolume();
+                    }
+                }
+                case KeyEvent.VK_ENTER -> {
+                    switch (pauseScreen.selectedOption) {
+                        case 1 -> gp.gameState = gp.playState;
+                        case 2 -> pauseScreen.pauseScreenState = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleCharacterState(int code){
+        if(code == KeyEvent.VK_C){
+            gp.gameState = gp.playState;
+        }
     }
 
     private void handleOperationInput(int code) {

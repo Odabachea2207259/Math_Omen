@@ -13,7 +13,7 @@ public class Player extends Entity {
 
     public KeyHandler kh;
 
-    int maxHealth;
+    public int maxHealth;
     public final int screenX;
     public final int screenY;
 
@@ -21,6 +21,7 @@ public class Player extends Entity {
     public Enemy closest = null;
     public double dx,dy,angulo = 0;
     public int bulletX, bulletY;
+    public int attack;
 
     public int shootCounter = 0;
     BufferedImage image = null;
@@ -55,6 +56,11 @@ public class Player extends Entity {
         seleccion = kh.characterPressed;
 
         projectile = new OBJ_Bullet(gp);
+        attack = getAttack();
+    }
+
+    public int getAttack(){
+        return this.damage + projectile.damage;
     }
 
     public void update(){

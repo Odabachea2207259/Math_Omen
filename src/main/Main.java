@@ -20,6 +20,7 @@ public class Main {
 
         window.add(gamePanel, BorderLayout.CENTER);
         window.add(cantEnemies, BorderLayout.NORTH);
+        cantEnemies.setVisible(false);
 
         window.pack();
 
