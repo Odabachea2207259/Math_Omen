@@ -3,17 +3,14 @@ package entity.Enemies;
 import entity.Enemy;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-
 public class Power extends Enemy {
-    public Power(GamePanel gamePanel, int startX, int startY) {
+    public Power(GamePanel gamePanel, int startX, int startY, int multiplier) {
         super(gamePanel, startX, startY);
         this.nombre = "Exponente";
         this.speed = 4;
-        this.damage = 6;
+        this.damage = 6 * multiplier;
         this.exp = 4;
-        this.health = 1;
+        this.health = 1 * multiplier;
         this.growl = 7;
         loadEnemyImages();
     }

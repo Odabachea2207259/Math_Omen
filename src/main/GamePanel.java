@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Player player = new Player(this,keyHandler); //JUGADOR
     public ArrayList<Enemy> enemies = new ArrayList<>(); //TODOS LOS ENEMIGOS
+    private int enemiesMultiplier = 1;
     public ArrayList<Projectile> projectileList = new ArrayList<>(); //PROJECTILES
 
     JLabel scoreCantEnemies; //PARA VER CUANTOS ENEMIGOS EN PANTALLA
@@ -122,6 +123,7 @@ public class GamePanel extends JPanel implements Runnable {
                 startEnemySpawnTimer(this);
                 time++;
             }
+
             synchronized (player){
                 if (player.alive) {
                     player.update(); //ACTUALIZAR JUGADOR
@@ -129,6 +131,10 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             synchronized (enemies){
+                if(ui.operationScreen.wrong){
+                    enemiesMultiplier++;
+                    ui.operationScreen.wrong = false;
+                }
                 for(int i = 0; i < enemies.size(); i++){
                     Enemy e = enemies.get(i);
                     if(e.alive){
@@ -179,6 +185,7 @@ public class GamePanel extends JPanel implements Runnable {
             changeMusic(2);
             enemies.clear();
             projectileList.clear();
+            player.setDefaultValues();
             ui.draw(g2); // COMO EL GAMESTATE ESTA POR DEFAULT EN TITLESTATE SE DIBUJARA EL TITULO
         }
         else{
@@ -251,13 +258,10 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             synchronized (enemies) {
-                Enemy newEnemy = EnemyFactory.createRandomEnemy(gp,startX,startY);
-                if(ui.operationScreen.wrong){
-                    newEnemy.improveEnemies();
-                    ui.operationScreen.wrong = false;
-                }
+                Enemy newEnemy = EnemyFactory.createRandomEnemy(gp,startX,startY,enemiesMultiplier);
                 enemies.add(newEnemy);
                 System.out.println(newEnemy + "\n");
+                System.out.println(player + "\n");
             }
 
             cantEnemies++;

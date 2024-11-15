@@ -167,17 +167,6 @@ public class UI {
         }
     }
 
-    /*public class PauseScreen {
-        public void draw() {
-            g2.setFont(arial_100);
-            g2.setColor(Color.WHITE);
-            String text = "PAUSE";
-            int x = getXforCenteredText(text);
-            int y = getYforCenteredText(text);
-            g2.drawString(text, x, y);
-        }
-    }*/
-
     // Clase anidada para la pantalla de pausa
     public class PauseScreen {
 
@@ -241,28 +230,7 @@ public class UI {
             return (gp.screenHeight - textHeight) / 2;  // Asumiendo que el alto de la pantalla es 600px
         }
 
-        // Métodos para manejar la selección de opciones (puedes adaptarlos con eventos de teclado o ratón)
-        public void selectUp() {
-            if (selectedOption > 0) {
-                selectedOption--;
-            }
-        }
-
-        public void selectDown() {
-            if (selectedOption < 2) {
-                selectedOption++;
-            }
-        }
-
-        public int getSelectedOption() {
-            return selectedOption;
-        }
-
-        public void setSelectedOption(int option) {
-            this.selectedOption = option;
-        }
     }
-
 
     // Clase anidada para la pantalla de operación
     public class OperationScreen {

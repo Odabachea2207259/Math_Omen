@@ -3,17 +3,14 @@ package entity.Enemies;
 import entity.Enemy;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-
 public class Substract extends Enemy {
-    public Substract(GamePanel gamePanel, int startX, int startY) {
+    public Substract(GamePanel gamePanel, int startX, int startY, int multiplier) {
         super(gamePanel, startX, startY);
         this.nombre = "Menos";
         this.speed = 2;
-        this.damage = 10;
+        this.damage = 10 * multiplier;
         this.exp = 2;
-        this.health = 5;
+        this.health = 5 * multiplier;
         this.growl = 8;
         loadEnemyImages();
     }

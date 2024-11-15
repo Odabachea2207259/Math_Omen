@@ -166,22 +166,6 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-    private void processAnswer(int selectedOption) {
-        UI.OperationScreen operationScreen = gp.ui.operationScreen;
-
-        boolean correct = operationScreen.isAnswerCorrect();
-        if (correct) {
-            // Acción si la respuesta es correcta
-            gp.ui.operationScreen.resultMessage = "CORRECT!!!";
-        } else {
-            // Acción si la respuesta es incorrecta
-            gp.ui.operationScreen.resultMessage = "WRONG!!!";
-        }
-
-        gp.ui.operationScreen.resultTime = System.currentTimeMillis();
-        gp.ui.operationScreen.resultDisplayed = true;
-    }
-
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 

@@ -287,4 +287,9 @@ public class Player extends Entity {
             frame4 = setup("/player/nina-0004");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Health: " + health + "\tMax Healt: " + maxHealth + "\tDamage: " + damage;
+    }
 }

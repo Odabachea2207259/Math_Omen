@@ -4,6 +4,8 @@ import entity.Enemy;
 import entity.Player;
 import entity.Projectile;
 
+import java.util.ArrayList;
+
 public class CollisionChecker {
     GamePanel gp;
 
@@ -139,19 +141,21 @@ public class CollisionChecker {
         }
     }
 
-    public void checkProjectile(Projectile projectile){
-        for(Enemy enemies : gp.enemies){
-            if(projectile.worldX + gp.tileSize/2 > enemies.worldX &&
-               projectile.worldX + gp.tileSize/2 < enemies.worldX + gp.tileSize &&
-               projectile.worldY + gp.tileSize/2 > enemies.worldY &&
-               projectile.worldY + gp.tileSize/2 < enemies.worldY + gp.tileSize &&
-               projectile.canDamage) {
-                enemies.health -= projectile.damage + gp.player.damage;
+    public synchronized void checkProjectile(Projectile projectile) {
+        ArrayList<Enemy> enemiesCopy = new ArrayList<>(gp.enemies); // Crea una copia de la lista
+        for (Enemy enemies : enemiesCopy) {
+            if (projectile.worldX + gp.tileSize / 2 > enemies.worldX &&
+                    projectile.worldX + gp.tileSize / 2 < enemies.worldX + gp.tileSize &&
+                    projectile.worldY + gp.tileSize / 2 > enemies.worldY &&
+                    projectile.worldY + gp.tileSize / 2 < enemies.worldY + gp.tileSize &&
+                    projectile.canDamage) {
+                enemies.health -= (projectile.damage + gp.player.damage);
                 gp.playSoundEffect(enemies.growl);
                 projectile.alive = false;
                 projectile.canDamage = false;
             }
         }
     }
+
 
 }

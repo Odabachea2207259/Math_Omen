@@ -7,13 +7,13 @@ import main.GamePanel;
 //import java.io.IOException;
 
 public class Multiply extends Enemy {
-    public Multiply(GamePanel gamePanel, int startX, int startY) {
+    public Multiply(GamePanel gamePanel, int startX, int startY, int multiplier) {
         super(gamePanel, startX, startY);
         this.nombre = "Multiplicación";
         this.speed = 3;
-        this.damage = 8;
+        this.damage = 8 * multiplier;
         this.exp = 3;
-        this.health = 3;
+        this.health = 3 * multiplier;
         this.growl = 6;
         loadEnemyImages();
     }

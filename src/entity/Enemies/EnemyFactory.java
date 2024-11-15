@@ -8,15 +8,15 @@ import java.util.Random;
 public class EnemyFactory {
     private static final Random random = new Random();
 
-    public static Enemy createRandomEnemy(GamePanel gamePanel, int startX, int startY) {
+    public static Enemy createRandomEnemy(GamePanel gamePanel, int startX, int startY, int multiplier) {
         int enemyType = random.nextInt(5) + 1;
         return switch (enemyType) {
-            case 1 -> new Add(gamePanel, startX, startY);
-            case 2 -> new Substract(gamePanel, startX, startY);
-            case 3 -> new Multiply(gamePanel, startX, startY);
-            case 4 -> new Division(gamePanel, startX, startY);
-            case 5 -> new Power(gamePanel, startX, startY);
-            default -> new Add(gamePanel, startX, startY); // Fallback
+            case 1 -> new Add(gamePanel, startX, startY, multiplier);
+            case 2 -> new Substract(gamePanel, startX, startY, multiplier);
+            case 3 -> new Multiply(gamePanel, startX, startY, multiplier);
+            case 4 -> new Division(gamePanel, startX, startY, multiplier);
+            case 5 -> new Power(gamePanel, startX, startY, multiplier);
+            default -> new Add(gamePanel, startX, startY, multiplier); // Fallback
         };
     }
 
