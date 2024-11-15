@@ -195,7 +195,7 @@ public class Player extends Entity {
             g2.setTransform(old);
         }
 
-        System.out.println("Exp: " + exp + "Next Level: " + nextLevelExp);
+        //System.out.println("Exp: " + exp + "Next Level: " + nextLevelExp);
     }
 
     public void checkClosestEnemy() {

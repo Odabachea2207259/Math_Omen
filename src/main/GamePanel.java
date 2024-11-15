@@ -12,6 +12,8 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
 
+    Window window = SwingUtilities.getWindowAncestor(this);
+
     final int originalTileSize = 16; //Tamaño de los elementos
     final int scale = 3;
 
@@ -123,7 +125,6 @@ public class GamePanel extends JPanel implements Runnable {
             synchronized (player){
                 if (player.alive) {
                     player.update(); //ACTUALIZAR JUGADOR
-
                 }
             }
 
@@ -160,6 +161,10 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == pauseState){
             //FALTA IMPLEMENTAR MENU DE PAUSA EN UI
             stopMusic();
+        }
+
+        if(gameState == operationState){
+            //stopMusic();
         }
 
     }

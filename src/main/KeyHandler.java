@@ -1,4 +1,3 @@
-
 package main;
 
 import java.awt.event.KeyEvent;
@@ -7,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed,characterPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, characterPressed;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -108,16 +107,41 @@ public class KeyHandler implements KeyListener {
     }
 
     private void handleOperationInput(int code) {
+        UI.OperationScreen operationScreen = gp.ui.operationScreen;
+
         switch (code) {
-            case KeyEvent.VK_W -> upPressed = true;
-            case KeyEvent.VK_S -> downPressed = true;
-            case KeyEvent.VK_A -> leftPressed = true;
-            case KeyEvent.VK_D -> rightPressed = true;
+            case KeyEvent.VK_W -> {
+                if (operationScreen.selectedOption > 0) {
+                    operationScreen.selectedOption--;
+                }
+            }
+            case KeyEvent.VK_S -> {
+                if (operationScreen.selectedOption < 2) {
+                    operationScreen.selectedOption++;
+                }
+            }
             case KeyEvent.VK_ENTER -> {
                 enterPressed = true;
-                gp.gameState = gp.playState;
+                gp.ui.operationScreen.selectOption();
+                //processAnswer(operationScreen.selectedOption); // Procesar la respuesta seleccionada
             }
         }
+    }
+
+    private void processAnswer(int selectedOption) {
+        UI.OperationScreen operationScreen = gp.ui.operationScreen;
+
+        boolean correct = operationScreen.isAnswerCorrect();
+        if (correct) {
+            // Acción si la respuesta es correcta
+            gp.ui.operationScreen.resultMessage = "CORRECT!!!";
+        } else {
+            // Acción si la respuesta es incorrecta
+            gp.ui.operationScreen.resultMessage = "WRONG!!!";
+        }
+
+        gp.ui.operationScreen.resultTime = System.currentTimeMillis();
+        gp.ui.operationScreen.resultDisplayed = true;
     }
 
     public void keyReleased(KeyEvent e) {

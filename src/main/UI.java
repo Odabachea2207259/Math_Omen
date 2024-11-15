@@ -4,7 +4,7 @@ import OperationGenerator.OperationGenerator;
 import OperationGenerator.Operation;
 
 import java.awt.*;
-import java.util.Scanner;
+
 
 public class UI {
     public GamePanel gp;
@@ -17,9 +17,10 @@ public class UI {
     public MessageDisplay messageDisplay;
 
     OperationGenerator generator = new OperationGenerator();
+    Operation operation;
     int operandsToGen = 2;
     String op;
-
+    int currentOption = 0;
     int foo = 0;
 
     public void setFoo(int foo) {
@@ -56,7 +57,9 @@ public class UI {
                 break;
             case GamePanel.operationState:
                 if (foo == 0) {
-                    op = generator.generateOperation(1, operandsToGen).toString();
+                    operation = generator.generateOperation(gp.player.level, operandsToGen);
+                    op = operation.toString();
+                    operationScreen.initialize(operation.getResult());
                     foo++;
                 }
                 operationScreen.draw();
@@ -144,25 +147,104 @@ public class UI {
         }
     }
 
+    // Clase anidada para la pantalla de operación
     public class OperationScreen {
+        private double[] answers = new double[3];
+        private double correctAnswer;
+        int selectedOption = 0;
+        String resultMessage = "";
+        long resultTime = -1;
+        boolean resultDisplayed = false;
+        private static final int MESSAGE_DISPLAY_TIME = 2000;
+
+        public void initialize(double correctAnswer) {
+            this.correctAnswer = correctAnswer;
+            answers[0] = correctAnswer;
+            answers[1] = correctAnswer + 1;
+            answers[2] = correctAnswer - 1;
+            shuffleArray(answers);
+            selectedOption = 0;
+            resultMessage = "";
+            resultTime = -1;
+            resultDisplayed = false;
+        }
+
         public void draw() {
             int alpha = 127;
-            Color myColour = new Color(0, 0, 0, alpha);
+            Color overlayColor = new Color(0, 0, 0, alpha);
 
-            g2.setFont(arial_100);
-            FontMetrics metrics = g2.getFontMetrics(arial_100);
-
-            int textWidth = metrics.stringWidth(op);
-            int textHeight = metrics.getHeight();
+            g2.setFont(arial_40);
 
             int x = getXforCenteredText(op);
-            int y = getYforCenteredText(op);
+            int y = gp.screenHeight / 2 - 100;
 
-            g2.setColor(myColour);
-            g2.fillRect(x - 10, y, textWidth + 20, textHeight * 2);
+            g2.setColor(overlayColor);
+            g2.fillRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, gp.screenHeight / 2);
 
             g2.setColor(Color.WHITE);
-            g2.drawString(op, x, y + metrics.getAscent());
+            g2.drawString(op, x, y);
+
+            for (int i = 0; i < 3; i++) {
+                String optionText = String.valueOf(answers[i]);
+                x = getXforCenteredText(optionText);
+                y = gp.screenHeight / 2 + i * 50;
+
+                if (i == selectedOption) {
+                    g2.setColor(Color.YELLOW);
+                } else {
+                    g2.setColor(Color.WHITE);
+                }
+
+                g2.drawString(optionText, x, y);
+            }
+
+            if(!resultMessage.isEmpty()) {
+                g2.setFont(arial_40);
+                g2.setColor(Color.BLACK);
+                int messageX = getXforCenteredText(resultMessage);
+                int messageY = gp.screenHeight / 2 + 150;
+                g2.drawString(resultMessage, messageX, messageY);
+                //selectOption();
+
+            }
+
+            if(resultDisplayed && System.currentTimeMillis() - resultTime >= MESSAGE_DISPLAY_TIME) {
+                gp.gameState = gp.playState;
+                resultMessage = "";
+                resultDisplayed = false;
+            }
+        }
+
+        public void selectOption() {
+
+            boolean correct = isAnswerCorrect();
+            if (correct) {
+                // Acción si la respuesta es correcta
+                resultMessage = "CORRECT!!!";
+            } else {
+                // Acción si la respuesta es incorrecta
+                resultMessage = "WRONG!!!";
+            }
+
+            gp.ui.operationScreen.resultTime = System.currentTimeMillis();
+            gp.ui.operationScreen.resultDisplayed = true;
+        }
+
+        public void navigateOptions(int direction) {
+            selectedOption = (selectedOption + direction + 3) % 3;
+        }
+
+        private void shuffleArray(double[] array) {
+            for (int i = array.length - 1; i > 0; i--) {
+                int index = (int) (Math.random() * (i + 1));
+                double temp = array[index];
+                array[index] = array[i];
+                array[i] = temp;
+            }
+        }
+
+        public boolean isAnswerCorrect() {
+            return answers[selectedOption] == correctAnswer;
         }
     }
 
