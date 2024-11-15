@@ -170,7 +170,7 @@ public class UI {
         }
 
         public void draw() {
-            int alpha = 127;
+            int alpha = 200;
             Color overlayColor = new Color(0, 0, 0, alpha);
 
             g2.setFont(arial_40);
@@ -201,9 +201,9 @@ public class UI {
 
             if(!resultMessage.isEmpty()) {
                 g2.setFont(arial_40);
-                g2.setColor(Color.BLACK);
+                g2.setColor(Color.YELLOW);
                 int messageX = getXforCenteredText(resultMessage);
-                int messageY = gp.screenHeight / 2 + 150;
+                int messageY = gp.screenHeight / 2 + 160;
                 g2.drawString(resultMessage, messageX, messageY);
                 //selectOption();
 
