@@ -7,6 +7,7 @@ import entity.Enemy;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Random;
 
 
 public class UI {
@@ -245,9 +246,12 @@ public class UI {
 
         public void initialize(double correctAnswer) {
             this.correctAnswer = correctAnswer;
+
+            Random random = new Random();
+
             answers[0] = correctAnswer;
-            answers[1] = correctAnswer + 1;
-            answers[2] = correctAnswer - 1;
+            answers[1] = correctAnswer + random.nextInt(8) + 1;
+            answers[2] = correctAnswer - random.nextInt(8) + 1;
             shuffleArray(answers);
             selectedOption = 0;
             resultMessage = "";
