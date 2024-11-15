@@ -42,11 +42,11 @@ public class Operation {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(operands[0]); // Add first operand
+        sb.append((int) operands[0]); // Add first operand
 
         // Add each operand and its respective operation
         for (int i = 0; i < operators.length; i++) {
-            sb.append(" ").append(operators[i]).append(" ").append(operands[i + 1]);
+            sb.append(" ").append(operators[i]).append(" ").append((int) operands[i + 1]);
         }
         return sb.toString();
     }
