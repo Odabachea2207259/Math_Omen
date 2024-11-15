@@ -66,7 +66,7 @@ public class UI {
                 messageDisplay.draw();
                 break;
             case GamePanel.pauseState:
-                pauseScreen.draw();
+                //pauseScreen.draw();
                 break;
             case GamePanel.operationState:
                 if (foo == 0) {
@@ -177,6 +177,81 @@ public class UI {
             g2.drawString(text, x, y);
         }
     }
+
+    /*
+    public class PauseScreen {
+
+        private Font arial_100 = new Font("Arial", Font.PLAIN, 100); // Fuente para el título
+        private Font arial_50 = new Font("Arial", Font.PLAIN, 50);  // Fuente para las opciones
+        private int selectedOption = 0; // Para saber qué opción está seleccionada (0: Continuar, 1: Opciones, 2: Salir)
+
+        public void draw(Graphics g2) {
+            // Título "PAUSE"
+            g2.setFont(arial_100);
+            g2.setColor(Color.WHITE);
+            String text = "PAUSE";
+            int x = getXforCenteredText(g2, text, arial_100);
+            int y = getYforCenteredText(g2, text, arial_100);
+            g2.drawString(text, x, y);
+
+            // Opciones del menú
+            g2.setFont(arial_50);
+
+            // Continuar
+            g2.setColor(selectedOption == 0 ? Color.YELLOW : Color.WHITE);
+            String continueText = "Continuar";
+            int continueX = getXforCenteredText(g2, continueText, arial_50);
+            int continueY = y + 100; // Se coloca 100 píxeles abajo del título
+            g2.drawString(continueText, continueX, continueY);
+
+            // Opciones
+            g2.setColor(selectedOption == 1 ? Color.YELLOW : Color.WHITE);
+            String optionsText = "Opciones";
+            int optionsX = getXforCenteredText(g2, optionsText, arial_50);
+            int optionsY = continueY + 60; // Separado 60 píxeles de la opción anterior
+            g2.drawString(optionsText, optionsX, optionsY);
+
+            // Salir
+            g2.setColor(selectedOption == 2 ? Color.YELLOW : Color.WHITE);
+            String exitText = "Salir";
+            int exitX = getXforCenteredText(g2, exitText, arial_50);
+            int exitY = optionsY + 60; // Separado 60 píxeles de la opción anterior
+            g2.drawString(exitText, exitX, exitY);
+        }
+        // Método para centrar el texto en el eje X
+        private int getXforCenteredText(Graphics g2, String text, Font font) {
+            int textWidth = g2.getFontMetrics(font).stringWidth(text);
+            return (800 - textWidth) / 2;  // Asumiendo que el ancho de la pantalla es 800px
+        }
+
+        // Método para centrar el texto en el eje Y
+        private int getYforCenteredText(Graphics g2, String text, Font font) {
+            int textHeight = g2.getFontMetrics(font).getHeight();
+            return (600 - textHeight) / 2;  // Asumiendo que el alto de la pantalla es 600px
+        }
+
+        // Métodos para manejar la selección de opciones (puedes adaptarlos con eventos de teclado o ratón)
+        public void selectUp() {
+            if (selectedOption > 0) {
+                selectedOption--;
+            }
+        }
+
+        public void selectDown() {
+            if (selectedOption < 2) {
+                selectedOption++;
+            }
+        }
+
+        public int getSelectedOption() {
+            return selectedOption;
+        }
+
+        public void setSelectedOption(int option) {
+            this.selectedOption = option;
+        }
+    }*/
+
 
     // Clase anidada para la pantalla de operación
     public class OperationScreen {

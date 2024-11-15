@@ -45,7 +45,7 @@ public class Player extends Entity {
         worldY = gp.tileSize * 65;
 
         alive = true;
-        speed = 18;
+        speed = 16;
         health = 100;
         maxHealth = health;
         direction = "up";
@@ -177,12 +177,14 @@ public class Player extends Entity {
         g2.setColor(Color.BLACK);
         g2.fillRect(10, 0, gp.screenWidth - 18, 20);  // x, y, ancho, alto
 
-
         // Dibuja la barra de experiencia (azul)
-        // Calcula el porcentaje
-        int anchoBarra = (int)((float)exp / nextLevelExp * 200);
-        g2.setColor(Color.getHSBColor(200f / 360f,0.7f, 0.90f));
-        g2.fillRect(10, 0, anchoBarra, 20);  // x, y, ancho variable, alto
+        if(exp != 0)
+        {
+            // Calcula el porcentaje
+            int anchoBarra = (int)((float)exp / nextLevelExp * gp.screenWidth - 18);
+            g2.setColor(Color.getHSBColor(200f / 360f,0.7f, 0.90f));
+            g2.fillRect(10, 0, anchoBarra, 20);  // x, y, ancho variable, alto
+        }
 
         // Borde de la barra
         g2.setColor(Color.YELLOW);  // Color del borde
