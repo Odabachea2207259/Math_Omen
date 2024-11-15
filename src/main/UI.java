@@ -3,13 +3,18 @@ package main;
 import OperationGenerator.OperationGenerator;
 import OperationGenerator.Operation;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
 
 
 public class UI {
     public GamePanel gp;
     private Font arial_100, arial_40;
+    private Font arial_title;
     private Graphics2D g2;
+
+    private Image backgroundImage;
 
     public TitleScreen titleScreen;
     public PauseScreen pauseScreen;
@@ -33,6 +38,14 @@ public class UI {
         this.gp = gp;
         this.arial_100 = new Font("Arial", Font.BOLD, 100);
         this.arial_40 = new Font("Arial", Font.PLAIN, 40);
+        this.arial_title = new Font("Arial", Font.BOLD, 120);
+
+        // Cargar la imagen de fondo
+        try {
+            backgroundImage = ImageIO.read(getClass().getResource("/Main.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Inicializar pantallas anidadas
         titleScreen = new TitleScreen();
@@ -96,21 +109,39 @@ public class UI {
         }
 
         public void drawMainMenu() {
-            g2.setColor(new Color(0, 0, 0));
-            g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+            if (backgroundImage != null) {
+                g2.drawImage(backgroundImage, 0, 0, gp.screenWidth, gp.screenHeight, null);
+            } else {
+                // Si no hay imagen, rellenar con color de fondo negro
+                g2.setColor(new Color(0, 0, 0));
+                g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+            }
+
+            g2.setFont(arial_title);
 
             String title = "Math Omen";
             int x = getXforCenteredText(title);
             int y = gp.tileSize * 3;
 
             g2.setColor(Color.gray);
-            g2.drawString(title, x + 5, y + 5);
+            g2.drawString(title, x, y + 80);
             g2.setColor(Color.WHITE);
-            g2.drawString(title, x, y);
+            g2.drawString(title, x, y + 70);
 
-            drawMenuOption("NEW GAME", y + gp.tileSize * 4, 0);
-            drawMenuOption("SCOREBOARD", y + gp.tileSize * 6, 1);
-            drawMenuOption("QUIT", y + gp.tileSize * 8, 2);
+            int alpha = 200;
+            Color overlayColor = new Color(0, 0, 0, alpha);
+            g2.setColor(overlayColor);
+            g2.fillRoundRect(gp.screenWidth / 4, gp.screenHeight / 2, gp.screenWidth / 2, 300, 40, 40);
+
+            g2.setColor(Color.white);
+            g2.setStroke(new BasicStroke(6));
+            g2.drawRoundRect(gp.screenWidth / 4, gp.screenHeight / 2, gp.screenWidth / 2, 300, 40, 40);
+
+            g2.setFont(arial_40);
+
+            drawMenuOption("NEW GAME", y + gp.tileSize * 6, 0);
+            drawMenuOption("SCOREBOARD", y + gp.tileSize * 8, 1);
+            drawMenuOption("QUIT", y + gp.tileSize * 10, 2);
         }
 
         public void drawCharacterSelection() {
