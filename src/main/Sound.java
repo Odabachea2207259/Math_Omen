@@ -26,6 +26,12 @@ public class Sound {
 
         // Proyectiles
         soundURL[9] = getClass().getResource("/sound/effects/Fire2.wav");
+
+        // UI
+        soundURL[10] = getClass().getResource("/sound/effects/Item2A.wav");
+        soundURL[11] = getClass().getResource("/sound/effects/Menu2A.wav");
+        soundURL[12] = getClass().getResource("/sound/effects/teleport.wav");
+        soundURL[13] = getClass().getResource("/sound/effects/Win Jingle2.wav");
     }
 
     public void setFile(int i) {

@@ -26,6 +26,7 @@ public class Projectile extends Entity{
         this.angle = angulo;
 
         magnitud = Math.sqrt(dx*dx+dy*dy);
+        gp.playSoundEffect(9);
         //System.out.println("Dx: "+ dx + " Dy: "+ dy + "D: " + magnitud + " Angulo: " + Math.toDegrees(angulo));
     }
 

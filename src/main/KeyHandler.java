@@ -41,8 +41,10 @@ public class KeyHandler implements KeyListener {
         if (titleScreen.titleScreenState == 0) {
             if (code == KeyEvent.VK_W) {
                 titleScreen.commandNum--;
+                gp.playSoundEffect(10);
             } else if (code == KeyEvent.VK_S) {
                 titleScreen.commandNum++;
+                gp.playSoundEffect(10);
             }
 
             // Limitar los valores de commandNum
@@ -53,6 +55,8 @@ public class KeyHandler implements KeyListener {
             }
 
             if (code == KeyEvent.VK_ENTER) {
+                gp.playSoundEffect(11);
+
                 switch (titleScreen.commandNum) {
                     case 0 -> titleScreen.titleScreenState = 1; // Ir a selección de personaje
                     case 1 -> {} // IMPLEMENTAR SCOREBOARDS
@@ -62,8 +66,10 @@ public class KeyHandler implements KeyListener {
         } else if (titleScreen.titleScreenState == 1) {
             if (code == KeyEvent.VK_W) {
                 titleScreen.commandNum--;
+                gp.playSoundEffect(10);
             } else if (code == KeyEvent.VK_S) {
                 titleScreen.commandNum++;
+                gp.playSoundEffect(10);
             }
 
             // Limitar los valores de commandNum en selección de personaje
@@ -74,6 +80,8 @@ public class KeyHandler implements KeyListener {
             }
 
             if (code == KeyEvent.VK_ENTER) {
+                gp.playSoundEffect(11);
+
                 if (titleScreen.commandNum == 0) {
                     // Selección de personaje Boy
                     characterPressed = false;
@@ -113,11 +121,13 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_W -> {
                 if (operationScreen.selectedOption > 0) {
                     operationScreen.selectedOption--;
+                    gp.playSoundEffect(10);
                 }
             }
             case KeyEvent.VK_S -> {
                 if (operationScreen.selectedOption < 2) {
                     operationScreen.selectedOption++;
+                    gp.playSoundEffect(10);
                 }
             }
             case KeyEvent.VK_ENTER -> {

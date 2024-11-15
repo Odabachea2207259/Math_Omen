@@ -37,8 +37,9 @@ public class GamePanel extends JPanel implements Runnable {
     Random randomNumbers = new Random(); //SE NECESITA GG
     public CollisionChecker cChecker = new CollisionChecker(this); //CHECKA COLISIONES DE JUGADORES Y ENEMIGOS
 
-    Sound sound = new Sound();
-    private int currentSongIndex = -1;
+    Sound backgroundMusic  = new Sound();
+    Sound soundEffect  = new Sound();
+    public int currentSongIndex = -1;
 
     Thread gameThread; //HILO PRINCIPAL DEL JUEGO
     int time = 0;
@@ -199,20 +200,20 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
-    public void playMusic(int i){
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+    public void playMusic(int i) {
+        backgroundMusic.setFile(i);
+        backgroundMusic.play();
+        backgroundMusic.loop();
     }
 
     public void stopMusic(){
-        sound.stop();
+        backgroundMusic.stop();
         currentSongIndex = -1;
     }
 
-    public void playSoundEffect(int i){
-        sound.setFile(i);
-        sound.play();
+    public void playSoundEffect(int i) {
+        soundEffect.setFile(i);
+        soundEffect.play();
     }
 
     public void changeMusic(int i){

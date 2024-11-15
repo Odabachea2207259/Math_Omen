@@ -221,9 +221,11 @@ public class UI {
             if (correct) {
                 // Acción si la respuesta es correcta
                 resultMessage = "CORRECT!!!";
+                gp.playSoundEffect(13);
             } else {
                 // Acción si la respuesta es incorrecta
                 resultMessage = "WRONG!!!";
+                gp.playSoundEffect(12);
             }
 
             gp.ui.operationScreen.resultTime = System.currentTimeMillis();
