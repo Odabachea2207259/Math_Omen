@@ -66,7 +66,7 @@ public class UI {
                 messageDisplay.draw();
                 break;
             case GamePanel.pauseState:
-                //pauseScreen.draw();
+                pauseScreen.draw(g2);
                 break;
             case GamePanel.operationState:
                 if (foo == 0) {
@@ -166,8 +166,7 @@ public class UI {
         }
     }
 
-    // Clase anidada para la pantalla de pausa
-    public class PauseScreen {
+    /*public class PauseScreen {
         public void draw() {
             g2.setFont(arial_100);
             g2.setColor(Color.WHITE);
@@ -176,16 +175,27 @@ public class UI {
             int y = getYforCenteredText(text);
             g2.drawString(text, x, y);
         }
-    }
+    }*/
 
-    /*
+    // Clase anidada para la pantalla de pausa
     public class PauseScreen {
 
         private Font arial_100 = new Font("Arial", Font.PLAIN, 100); // Fuente para el título
         private Font arial_50 = new Font("Arial", Font.PLAIN, 50);  // Fuente para las opciones
         private int selectedOption = 0; // Para saber qué opción está seleccionada (0: Continuar, 1: Opciones, 2: Salir)
 
-        public void draw(Graphics g2) {
+        public void draw(Graphics2D g2) {
+
+            g2.setColor(Color.white);
+            g2.setStroke(new BasicStroke(6));
+            g2.drawRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, 400, 40, 40);
+
+            int alpha = 200;
+            Color overlayColor = new Color(0, 0, 0, alpha);
+            g2.setColor(overlayColor);
+            g2.fillRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, 400, 40, 40);
+
+
             // Título "PAUSE"
             g2.setFont(arial_100);
             g2.setColor(Color.WHITE);
@@ -218,16 +228,16 @@ public class UI {
             int exitY = optionsY + 60; // Separado 60 píxeles de la opción anterior
             g2.drawString(exitText, exitX, exitY);
         }
-        // Método para centrar el texto en el eje X
+        // Metodo para centrar el texto en el eje X
         private int getXforCenteredText(Graphics g2, String text, Font font) {
             int textWidth = g2.getFontMetrics(font).stringWidth(text);
-            return (800 - textWidth) / 2;  // Asumiendo que el ancho de la pantalla es 800px
+            return (gp.screenWidth - textWidth) / 2;  // Asumiendo que el ancho de la pantalla es 800px
         }
 
-        // Método para centrar el texto en el eje Y
+        // Metodo para centrar el texto en el eje Y
         private int getYforCenteredText(Graphics g2, String text, Font font) {
             int textHeight = g2.getFontMetrics(font).getHeight();
-            return (600 - textHeight) / 2;  // Asumiendo que el alto de la pantalla es 600px
+            return (gp.screenHeight - textHeight) / 2;  // Asumiendo que el alto de la pantalla es 600px
         }
 
         // Métodos para manejar la selección de opciones (puedes adaptarlos con eventos de teclado o ratón)
@@ -250,7 +260,7 @@ public class UI {
         public void setSelectedOption(int option) {
             this.selectedOption = option;
         }
-    }*/
+    }
 
 
     // Clase anidada para la pantalla de operación
