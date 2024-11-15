@@ -159,7 +159,7 @@ public class GamePanel extends JPanel implements Runnable {
         //LO QUE HARA SI EL JUEGO ESTA EN PAUSA
         if(gameState == pauseState){
             //FALTA IMPLEMENTAR MENU DE PAUSA EN UI
-            stopMusic();
+            //stopMusic();
         }
 
         if(gameState == operationState){

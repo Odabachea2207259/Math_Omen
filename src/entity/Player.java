@@ -13,6 +13,7 @@ public class Player extends Entity {
 
     public KeyHandler kh;
 
+    int maxHealth;
     public final int screenX;
     public final int screenY;
 
@@ -20,8 +21,6 @@ public class Player extends Entity {
     public Enemy closest = null;
     public double dx,dy,angulo = 0;
     public int bulletX, bulletY;
-
-    int maxHealth;
 
     public int shootCounter = 0;
     BufferedImage image = null;
@@ -46,7 +45,7 @@ public class Player extends Entity {
         worldY = gp.tileSize * 65;
 
         alive = true;
-        speed = 14;
+        speed = 18;
         health = 100;
         maxHealth = health;
         direction = "up";
@@ -172,12 +171,14 @@ public class Player extends Entity {
         }
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
+        //System.out.println("Vida Maxima: " + maxHealth + "Vida Actual: " + health);
+
+        int healthWidth = (int)((health / (float)maxHealth) * 100);
 
         g2.setColor(Color.RED);
         g2.fillRect(screenX - 26, screenY - 10, 100, 6);
-
         g2.setColor(Color.green);
-        g2.fillRect(screenX - 26, screenY - 10, health, 6);
+        g2.fillRect(screenX - 26, screenY - 10, healthWidth, 6);
 
         AffineTransform old = g2.getTransform();
 
@@ -240,7 +241,8 @@ public class Player extends Entity {
             level++;
             nextLevelExp = nextLevelExp * 2;
             exp = 0;
-            health = maxHealth;
+            health += 25;
+            maxHealth = health;
             damage++;
 
             gp.ui.setFoo(0);

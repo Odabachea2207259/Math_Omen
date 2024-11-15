@@ -155,7 +155,7 @@ public class UI {
         String resultMessage = "";
         long resultTime = -1;
         boolean resultDisplayed = false;
-        private static final int MESSAGE_DISPLAY_TIME = 2000;
+        private static final int MESSAGE_DISPLAY_TIME = 500;
 
         public void initialize(double correctAnswer) {
             this.correctAnswer = correctAnswer;
@@ -188,6 +188,7 @@ public class UI {
                 String optionText = String.format("%.2f", answers[i]);
                 x = getXforCenteredText(optionText);
                 y = gp.screenHeight / 2 + i * 50;
+
 
                 if (i == selectedOption) {
                     g2.setColor(Color.YELLOW);

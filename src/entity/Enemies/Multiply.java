@@ -10,7 +10,7 @@ public class Multiply extends Enemy {
     public Multiply(GamePanel gamePanel, int startX, int startY) {
         super(gamePanel, startX, startY);
         this.nombre = "Multiplicación";
-        this.speed = 4;
+        this.speed = 3;
         this.damage = 8;
         this.exp = 3;
         this.health = 3;
