@@ -12,8 +12,6 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    Window window = SwingUtilities.getWindowAncestor(this);
-
     final int originalTileSize = 16; //Tamaño de los elementos
     final int scale = 3;
 
