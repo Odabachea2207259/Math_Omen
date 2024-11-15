@@ -109,31 +109,59 @@ public class KeyHandler implements KeyListener {
     }
 
     private void handlePauseInput(int code) {
+        UI.PauseScreen pauseScreen = gp.ui.pauseScreen;
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState; // Volver al juego
         }
+            switch (code) {
+                case KeyEvent.VK_W -> {
+                    if (pauseScreen.selectedOption > 0) {
+                        pauseScreen.selectedOption--;
+                        gp.playSoundEffect(10);
+                    }
+                }
+                case KeyEvent.VK_S -> {
+                    if (pauseScreen.selectedOption < 2) {
+                        pauseScreen.selectedOption++;
+                        gp.playSoundEffect(10);
+                    }
+                }
+                case KeyEvent.VK_ENTER -> {
+                    switch (pauseScreen.selectedOption) {
+                        case 0 -> gp.gameState = gp.playState;
+                        case 2 -> {
+                            gp.player.time = 0;
+                            gp.ui.titleScreen.titleScreenState = 0;
+                            gp.gameState = gp.titleState;
+                        }
+                    }
+                }
+            }
+
     }
 
     private void handleOperationInput(int code) {
         UI.OperationScreen operationScreen = gp.ui.operationScreen;
 
-        switch (code) {
-            case KeyEvent.VK_W -> {
-                if (operationScreen.selectedOption > 0) {
-                    operationScreen.selectedOption--;
-                    gp.playSoundEffect(10);
+        if(operationScreen.resultDisplayed == false) {
+            switch (code) {
+                case KeyEvent.VK_W -> {
+                    if (operationScreen.selectedOption > 0) {
+                        operationScreen.selectedOption--;
+                        gp.playSoundEffect(10);
+                    }
                 }
-            }
-            case KeyEvent.VK_S -> {
-                if (operationScreen.selectedOption < 2) {
-                    operationScreen.selectedOption++;
-                    gp.playSoundEffect(10);
+                case KeyEvent.VK_S -> {
+                    if (operationScreen.selectedOption < 2) {
+                        operationScreen.selectedOption++;
+                        gp.playSoundEffect(10);
+                    }
                 }
-            }
-            case KeyEvent.VK_ENTER -> {
-                enterPressed = true;
-                gp.ui.operationScreen.selectOption();
-                //processAnswer(operationScreen.selectedOption); // Procesar la respuesta seleccionada
+                case KeyEvent.VK_ENTER -> {
+                    enterPressed = true;
+                    gp.ui.operationScreen.selectOption();
+                    //processAnswer(operationScreen.selectedOption); // Procesar la respuesta seleccionada
+                }
             }
         }
     }

@@ -19,4 +19,5 @@ public class EnemyFactory {
             default -> new Add(gamePanel, startX, startY); // Fallback
         };
     }
+
 }

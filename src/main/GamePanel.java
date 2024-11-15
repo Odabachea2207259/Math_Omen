@@ -6,6 +6,7 @@ import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -175,6 +176,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         //DIBUJAR EL TITULO
         if(gameState == titleState){
+            changeMusic(2);
+            enemies.clear();
+            projectileList.clear();
             ui.draw(g2); // COMO EL GAMESTATE ESTA POR DEFAULT EN TITLESTATE SE DIBUJARA EL TITULO
         }
         else{
@@ -248,8 +252,12 @@ public class GamePanel extends JPanel implements Runnable {
 
             synchronized (enemies) {
                 Enemy newEnemy = EnemyFactory.createRandomEnemy(gp,startX,startY);
+                if(ui.operationScreen.wrong){
+                    newEnemy.improveEnemies();
+                    ui.operationScreen.wrong = false;
+                }
                 enemies.add(newEnemy);
-                //System.out.println(newEnemy + "\n");
+                System.out.println(newEnemy + "\n");
             }
 
             cantEnemies++;

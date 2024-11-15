@@ -25,7 +25,7 @@ public class Player extends Entity {
     public int shootCounter = 0;
     BufferedImage image = null;
     public boolean seleccion = false;
-    int time = 0;
+    public int time = 0;
 
 
     public Player(GamePanel gp, KeyHandler kh) {
@@ -220,7 +220,7 @@ public class Player extends Entity {
             g2.setTransform(old);
         }
 
-        //System.out.println("Exp: " + exp + "Next Level: " + nextLevelExp);
+        //System.out.println("Health: " + health + " Max Health: " + maxHealth + " Damage: " + damage);
     }
 
     public void checkClosestEnemy() {

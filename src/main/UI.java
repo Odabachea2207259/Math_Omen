@@ -2,6 +2,7 @@ package main;
 
 import OperationGenerator.OperationGenerator;
 import OperationGenerator.Operation;
+import entity.Enemy;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -182,7 +183,7 @@ public class UI {
 
         private Font arial_100 = new Font("Arial", Font.PLAIN, 100); // Fuente para el título
         private Font arial_50 = new Font("Arial", Font.PLAIN, 50);  // Fuente para las opciones
-        private int selectedOption = 0; // Para saber qué opción está seleccionada (0: Continuar, 1: Opciones, 2: Salir)
+        public int selectedOption = 0; // Para saber qué opción está seleccionada (0: Continuar, 1: Opciones, 2: Salir)
 
         public void draw(Graphics2D g2) {
 
@@ -271,6 +272,7 @@ public class UI {
         String resultMessage = "";
         long resultTime = -1;
         boolean resultDisplayed = false;
+        public boolean wrong = false;
         private static final int MESSAGE_DISPLAY_TIME = 500;
 
         public void initialize(double correctAnswer) {
@@ -343,6 +345,7 @@ public class UI {
                 // Acción si la respuesta es incorrecta
                 resultMessage = "WRONG!!!";
                 gp.playSoundEffect(12);
+                wrong = true;
             }
 
             gp.ui.operationScreen.resultTime = System.currentTimeMillis();

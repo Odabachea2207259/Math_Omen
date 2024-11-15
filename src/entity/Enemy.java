@@ -77,4 +77,10 @@ public abstract class Enemy extends Entity{
     public String toString() {
         return "Tipo: " + nombre + "\n\tVida: " + health + "\n\tDamage: " + damage + "\n\tExp: " + exp;
     }
+
+    public void improveEnemies(){
+        damage *= 2;
+        health *= 2;
+    }
+
 }
