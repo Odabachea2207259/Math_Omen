@@ -185,7 +185,7 @@ public class UI {
             g2.drawString(op, x, y);
 
             for (int i = 0; i < 3; i++) {
-                String optionText = String.valueOf(answers[i]);
+                String optionText = String.format("%.2f", answers[i]);
                 x = getXforCenteredText(optionText);
                 y = gp.screenHeight / 2 + i * 50;
 
