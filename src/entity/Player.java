@@ -177,6 +177,7 @@ public class Player extends Entity {
         g2.drawString(total, gp.screenWidth / 2 + 4, gp.screenHeight - 36);
         g2.setColor(Color.WHITE);
         g2.drawString(total, gp.screenWidth / 2, gp.screenHeight - 40);
+
     }
 
     public void draw(Graphics2D g2) {
