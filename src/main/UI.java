@@ -370,16 +370,19 @@ public class UI {
         }
 
         public void draw() {
+            g2.setColor(Color.white);
+            g2.setStroke(new BasicStroke(6));
+            g2.drawRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, 400, 40, 40);
+
             int alpha = 200;
             Color overlayColor = new Color(0, 0, 0, alpha);
+            g2.setColor(overlayColor);
+            g2.fillRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, 400, 40, 40);
 
             g2.setFont(arial_40);
 
             int x = getXforCenteredText(op);
             int y = gp.screenHeight / 2 - 100;
-
-            g2.setColor(overlayColor);
-            g2.fillRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, gp.screenHeight / 2);
 
             g2.setColor(Color.WHITE);
             g2.drawString(op, x, y);

@@ -30,6 +30,11 @@ public class Player extends Entity {
 
     public int expTotal = 0;
 
+    public void setExp(int exp) {
+        this.exp += exp;
+        expTotal += exp;
+    }
+
     public Player(GamePanel gp, KeyHandler kh) {
         super(gp);
         this.kh = kh;

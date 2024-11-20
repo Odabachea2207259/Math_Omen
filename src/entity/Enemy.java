@@ -50,8 +50,7 @@ public abstract class Enemy extends Entity{
 
         if(health <= 0){
             alive = false;
-            gp.player.exp += exp;
-            gp.player.expTotal += exp;
+            gp.player.setExp(exp);
         }
     }
 
