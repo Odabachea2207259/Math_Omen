@@ -360,8 +360,8 @@ public class UI {
             Random random = new Random();
 
             answers[0] = correctAnswer;
-            answers[1] = correctAnswer + random.nextInt(8) + 1;
-            answers[2] = correctAnswer - random.nextInt(8) + 1;
+            answers[1] = correctAnswer + (random.nextInt(8) + 1);
+            answers[2] = correctAnswer - (random.nextInt(8) + 1);
             shuffleArray(answers);
             selectedOption = 0;
             resultMessage = "";

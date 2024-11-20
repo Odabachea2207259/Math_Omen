@@ -167,16 +167,20 @@ public class Player extends Entity {
         // Opcional: Añadir texto para mostrar la experiencia
         g2.setFont(new Font("Arial", Font.BOLD, 22));
         g2.setColor(Color.WHITE);
-        g2.drawString("Exp: " + exp + "/" + nextLevelExp, gp.screenWidth / 2, 30);
+        String resultMessage = "Exp: " + exp + "/" + nextLevelExp;
+        int messageX = gp.ui.getXforCenteredText(resultMessage);
+        g2.drawString(resultMessage, messageX, 30);
     }
 
     public void drawScore(Graphics2D g2) {
         g2.setFont(new Font("Arial", Font.BOLD, 36));
         String total = expTotal + "000";
+        int messageX = gp.ui.getXforCenteredText(total);
+
         g2.setColor(Color.BLACK);
-        g2.drawString(total, gp.screenWidth / 2 + 4, gp.screenHeight - 36);
+        g2.drawString(total, messageX + 4, gp.screenHeight - 36);
         g2.setColor(Color.WHITE);
-        g2.drawString(total, gp.screenWidth / 2, gp.screenHeight - 40);
+        g2.drawString(total, messageX, gp.screenHeight - 40);
 
     }
 
