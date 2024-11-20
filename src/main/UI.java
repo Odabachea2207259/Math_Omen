@@ -277,63 +277,31 @@ public class UI {
 
             textY += gp.tileSize*2;
             g2.setColor(selectedOption == 1 ? Color.YELLOW : Color.WHITE);
+            g2.drawString("Sound Effect",textX,textY);
+
+            textY += gp.tileSize*2;
+            g2.setColor(selectedOption == 2 ? Color.YELLOW : Color.WHITE);
             g2.drawString("Control",textX,textY);
 
-            textY += gp.tileSize*3;
-            g2.setColor(selectedOption == 2 ? Color.YELLOW : Color.WHITE);
+            textY += gp.tileSize*2;
+            g2.setColor(selectedOption == 3 ? Color.YELLOW : Color.WHITE);
             g2.drawString("Regresar",textX,textY);
 
+            g2.setColor(selectedOption == 0 ? Color.YELLOW : Color.WHITE);
             textX = frameX + gp.tileSize*5;
             textY = frameY + gp.tileSize*2 + 24;
             g2.drawRect(textX,textY,120,24);
             int volumeWidth = 24 * gp.backgroundMusic.volumeScale;
             g2.fillRect(textX,textY,volumeWidth,24);
+
+            g2.setColor(selectedOption == 1 ? Color.YELLOW : Color.WHITE);
+            textX = frameX + gp.tileSize*5;
+            textY = frameY + gp.tileSize*4 + 24;
+            g2.drawRect(textX,textY,120,24);
+            volumeWidth = 24 * gp.soundEffect.volumeScale;
+            g2.fillRect(textX,textY,volumeWidth,24);
         }
 
-//        public void drawOptionsMenu() {
-//
-//            g2.setColor(Color.white);
-//            g2.setStroke(new BasicStroke(6));
-//            g2.drawRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth - 400, 400, 40, 40);
-//
-//            int alpha = 200;
-//            Color overlayColor = new Color(0, 0, 0, alpha);
-//            g2.setColor(overlayColor);
-//            g2.fillRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth - 400, 400, 40, 40);
-//
-//
-//            // Título "PAUSE"
-//            g2.setFont(arial_100);
-//            g2.setColor(Color.WHITE);
-//            String text = "CONFIGURATION";
-//            int x = getXforCenteredText(g2, text, arial_100);
-//            int y = getYforCenteredText(g2, text, arial_100);
-//            g2.drawString(text, x, y);
-//
-//            // Opciones del menú
-//            g2.setFont(arial_50);
-//
-//            // Continuar
-//            g2.setColor(selectedOption == 0 ? Color.YELLOW : Color.WHITE);
-//            String continueText = "OPTION 1";
-//            int continueX = getXforCenteredText(g2, continueText, arial_50);
-//            int continueY = y + 100; // Se coloca 100 píxeles abajo del título
-//            g2.drawString(continueText, continueX, continueY);
-//
-//            // Opciones
-//            g2.setColor(selectedOption == 1 ? Color.YELLOW : Color.WHITE);
-//            String optionsText = "OPTION 2";
-//            int optionsX = getXforCenteredText(g2, optionsText, arial_50);
-//            int optionsY = continueY + 60; // Separado 60 píxeles de la opción anterior
-//            g2.drawString(optionsText, optionsX, optionsY);
-//
-//            // Salir
-//            g2.setColor(selectedOption == 2 ? Color.YELLOW : Color.WHITE);
-//            String exitText = "Salir";
-//            int exitX = getXforCenteredText(g2, exitText, arial_50);
-//            int exitY = optionsY + 60; // Separado 60 píxeles de la opción anterior
-//            g2.drawString(exitText, exitX, exitY);
-//        }
 
         // Metodo para centrar el texto en el eje Y
         private int getYforCenteredText(Graphics g2, String text, Font font) {
