@@ -154,7 +154,7 @@ public class KeyHandler implements KeyListener {
                     }
                 }
                 case KeyEvent.VK_S -> {
-                    if (pauseScreen.selectedOption < 2) {
+                    if (pauseScreen.selectedOption < 3) {
                         pauseScreen.selectedOption++;
                         gp.playSoundEffect(10);
                     }
@@ -165,11 +165,19 @@ public class KeyHandler implements KeyListener {
                         gp.backgroundMusic.volumeScale--;
                         gp.backgroundMusic.checkVolume();
                     }
+                    if(pauseScreen.selectedOption == 1 && gp.soundEffect.volumeScale > 0) {
+                        gp.soundEffect.volumeScale--;
+                        gp.soundEffect.checkVolume();
+                    }
                 }
                 case KeyEvent.VK_D -> {
                     if(pauseScreen.selectedOption == 0 && gp.backgroundMusic.volumeScale < 5) {
                         gp.backgroundMusic.volumeScale++;
                         gp.backgroundMusic.checkVolume();
+                    }
+                    if(pauseScreen.selectedOption == 1 && gp.soundEffect.volumeScale < 5) {
+                        gp.soundEffect.volumeScale++;
+                        gp.soundEffect.checkVolume();
                     }
                 }
                 case KeyEvent.VK_ENTER -> {
