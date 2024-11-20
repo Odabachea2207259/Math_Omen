@@ -182,8 +182,7 @@ public class KeyHandler implements KeyListener {
                 }
                 case KeyEvent.VK_ENTER -> {
                     switch (pauseScreen.selectedOption) {
-                        case 1 -> gp.gameState = gp.playState;
-                        case 2 -> pauseScreen.pauseScreenState = 0;
+                        case 3 -> pauseScreen.pauseScreenState = 0;
                     }
                 }
             }

@@ -17,7 +17,7 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
-    public static final double DETECTION_RANGE = 200;
+    public static final double DETECTION_RANGE = 300;
     public Enemy closest = null;
     public double dx, dy, angulo = 0;
     public int bulletX, bulletY;
@@ -255,9 +255,10 @@ public class Player extends Entity {
 
         for (Enemy enemy : gp.enemies) {
             double distance = Math.hypot(this.worldX - enemy.worldX,this.worldY - enemy.worldY);
+            //System.out.println("Distance: " + distance + " Range " + DETECTION_RANGE);
             if(distance < DETECTION_RANGE) {
                 if (distance < closestDistance) {
-                    if(enemy != closest) {
+                    if (enemy != closest) {
                         closestDistance = distance;
                         closest = enemy;
                         dx = closest.worldX - this.worldX;
@@ -266,7 +267,19 @@ public class Player extends Entity {
 
                         bulletX = (int) (this.worldX + 30 * Math.cos(angulo));
                         bulletY = (int) (this.worldY + 30 * Math.sin(angulo));
-                        if(!closest.alive){closest = null;}
+                        if (!closest.alive) {
+                            closest = null;
+                        }
+                    }
+                }
+            }
+            if(distance > DETECTION_RANGE) {
+                bulletX = 0;
+                bulletY = 0;
+                if(closest != null){
+                    distance = Math.hypot(this.worldX - closest.worldX, this.worldY - closest.worldY);
+                    if (!closest.alive || distance > DETECTION_RANGE) {
+                        closest = null;
                     }
                 }
             }
