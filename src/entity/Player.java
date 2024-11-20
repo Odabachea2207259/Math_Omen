@@ -19,7 +19,7 @@ public class Player extends Entity {
 
     public static final double DETECTION_RANGE = 200;
     public Enemy closest = null;
-    public double dx,dy,angulo = 0;
+    public double dx, dy, angulo = 0;
     public int bulletX, bulletY;
     public int attack;
 
@@ -28,20 +28,21 @@ public class Player extends Entity {
     public boolean seleccion = false;
     public int time = 0;
 
+    public int expTotal = 0;
 
     public Player(GamePanel gp, KeyHandler kh) {
         super(gp);
         this.kh = kh;
 
-        screenX = gp.screenWidth/2 - (gp.tileSize/2);
-        screenY = gp.screenHeight/2 - (gp.tileSize/2);
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        solidArea = new Rectangle(worldX + 8,worldY + 8,32,32);
+        solidArea = new Rectangle(worldX + 8, worldY + 8, 32, 32);
 
         setDefaultValues();
     }
 
-    public void setDefaultValues(){
+    public void setDefaultValues() {
         worldX = gp.tileSize * 90;
         worldY = gp.tileSize * 65;
 
@@ -51,6 +52,7 @@ public class Player extends Entity {
         maxHealth = health;
         direction = "up";
         exp = 0;
+        expTotal = 0;
         level = 1;
         nextLevelExp = 25;
         seleccion = kh.characterPressed;
@@ -59,12 +61,12 @@ public class Player extends Entity {
         attack = getAttack();
     }
 
-    public int getAttack(){
+    public int getAttack() {
         return this.damage + projectile.damage;
     }
 
-    public void update(){
-        if(time == 0) {
+    public void update() {
+        if (time == 0) {
             seleccion = kh.characterPressed;
             loadPlayerImages();
             time++;
@@ -73,50 +75,50 @@ public class Player extends Entity {
         float deltaX = 0;
         float deltaY = 0;
 
-        if(kh.upPressed && canUp){
+        if (kh.upPressed && canUp) {
             deltaY = -1;
             //worldY -= speed;
             direction = "up";
         }
-        if(kh.downPressed && canDown){
+        if (kh.downPressed && canDown) {
             deltaY = 1;
             //worldY += speed;
             direction = "down";
         }
-        if(kh.leftPressed && canLeft){
+        if (kh.leftPressed && canLeft) {
             deltaX = -1;
             //worldX -= speed;
             direction = "left";
         }
-        if(kh.rightPressed && canRight){
+        if (kh.rightPressed && canRight) {
             deltaX = 1;
             //worldX += speed;
             direction = "right";
         }
 
         float length = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        if(length != 0){
-            deltaX = (deltaX * speed/ length);
-            deltaY = (deltaY * speed/ length);
+        if (length != 0) {
+            deltaX = (deltaX * speed / length);
+            deltaY = (deltaY * speed / length);
         }
 
-        worldX += (int)deltaX;
-        worldY += (int)deltaY;
+        worldX += (int) deltaX;
+        worldY += (int) deltaY;
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
         checkClosestEnemy();
 
-        if(invincible){
+        if (invincible) {
             invincibleCounter++;
-            if(invincibleCounter > 60){
+            if (invincibleCounter > 60) {
                 invincible = false;
                 invincibleCounter = 0;
             }
         }
 
         shootCounter++;
-        if(closest != null) {
+        if (closest != null) {
             if (shootCounter > 60) {
                 //projectile.set(worldX,worldY,);
                 shoot();
@@ -125,9 +127,9 @@ public class Player extends Entity {
         }
 
         spriteCounter++;
-        if(spriteCounter > 8){
+        if (spriteCounter > 8) {
             spriteNum++;
-            if(spriteNum > 4){
+            if (spriteNum > 4) {
                 spriteNum = 1;
             }
             spriteCounter = 0;
@@ -136,7 +138,7 @@ public class Player extends Entity {
         gp.cChecker.checkProjectile(projectile);
         checkLevelUp();
 
-        if(this.health <= 0){
+        if (this.health <= 0) {
             gp.ui.deadPlayer = true;
             health = 0;
             alive = false;
@@ -144,90 +146,99 @@ public class Player extends Entity {
 
     }
 
-    //@Override
-    public void draw(Graphics2D g2){
+    // Nuevo metodo para manejar la barra de experiencia
+    public void drawExperienceBar(Graphics2D g2) {
+        // Fondo de la barra
+        g2.setColor(Color.BLACK);
+        g2.fillRect(10, 4, gp.screenWidth - 18, 38); // x, y, ancho, alto
 
+        // Dibuja la barra de experiencia (azul)
+        if (exp != 0) {
+            // Calcula el porcentaje
+            int anchoBarra = (int) ((float) exp / nextLevelExp * (gp.screenWidth - 18));
+            g2.setColor(Color.getHSBColor(200f / 360f, 0.7f, 0.90f));
+            g2.fillRect(10, 4, anchoBarra, 38); // x, y, ancho variable, alto
+        }
+
+        // Borde de la barra
+        g2.setColor(Color.YELLOW); // Color del borde
+        g2.drawRect(8, 4, gp.screenWidth - 16, 38); // x, y, ancho, alto (tamaño del borde)
+
+        // Opcional: Añadir texto para mostrar la experiencia
+        g2.setFont(new Font("Arial", Font.BOLD, 22));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Exp: " + exp + "/" + nextLevelExp, gp.screenWidth / 2, 30);
+    }
+
+    public void drawScore(Graphics2D g2) {
+        g2.setFont(new Font("Arial", Font.BOLD, 36));
+        String total = expTotal + "000";
+        g2.setColor(Color.BLACK);
+        g2.drawString(total, gp.screenWidth / 2 + 4, gp.screenHeight - 36);
+        g2.setColor(Color.WHITE);
+        g2.drawString(total, gp.screenWidth / 2, gp.screenHeight - 40);
+    }
+
+    public void draw(Graphics2D g2) {
+        // Dibujo de fondo negro de la salud
         g2.setColor(Color.BLACK);
         g2.fillRect(screenX - 28, screenY - 12, 104, 10);
 
-        if(spriteNum == 1){
+        if (spriteNum == 1) {
             image = frame1;
         }
-        if(spriteNum == 2){
+        if (spriteNum == 2) {
             image = frame2;
         }
-        if(spriteNum == 3){
+        if (spriteNum == 3) {
             image = frame3;
         }
-        if(spriteNum == 4){
+        if (spriteNum == 4) {
             image = frame4;
         }
 
-        if(invincible){
+        if (invincible) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
-        if(direction.equals("right")) {
+        if (direction.equals("right")) {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-        }
-        else if(direction.equals("left")) {
+        } else if (direction.equals("left")) {
             g2.drawImage(image, screenX + gp.tileSize, screenY, -gp.tileSize, gp.tileSize, null);
-        }
-        else{
+        } else {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
-        //System.out.println("Vida Maxima: " + maxHealth + "Vida Actual: " + health);
+        // Dibuja la barra de experiencia
+        //drawExperienceBar(g2);
 
-        // Barra de experiencia
-        g2.setColor(Color.BLACK);
-        g2.fillRect(10, 0, gp.screenWidth - 18, 20);  // x, y, ancho, alto
-
-        // Dibuja la barra de experiencia (azul)
-        if(exp != 0)
-        {
-            // Calcula el porcentaje
-            int anchoBarra = (int)((float)exp / nextLevelExp * gp.screenWidth - 18);
-            g2.setColor(Color.getHSBColor(200f / 360f,0.7f, 0.90f));
-            g2.fillRect(10, 0, anchoBarra, 20);  // x, y, ancho variable, alto
-        }
-
-        // Borde de la barra
-        g2.setColor(Color.YELLOW);  // Color del borde
-        g2.drawRect(8, 0, gp.screenWidth - 16, 20);  // x, y, ancho, alto (tamaño del borde)
-
-        // Opcional: Añadir texto para mostrar la experiencia
-        g2.setColor(Color.WHITE);
-        g2.drawString("Exp: " + exp + "/" + nextLevelExp, gp.screenWidth / 2, 15);
-
-        // Calculo para la exp
-        int healthWidth = (int)((health / (float)maxHealth) * 100);
+        // Calculo para la salud
+        int healthWidth = (int) ((health / (float) maxHealth) * 100);
         g2.setColor(Color.RED);
         g2.fillRect(screenX - 26, screenY - 10, 100, 6);
-        g2.setColor(Color.green);
+        g2.setColor(Color.GREEN);
         g2.fillRect(screenX - 26, screenY - 10, healthWidth, 6);
 
         AffineTransform old = g2.getTransform();
 
-        if(closest != null){
-            g2.setColor(Color.black);
+        if (closest != null) {
+            g2.setColor(Color.BLACK);
 
             int playerCenterX = screenX + gp.tileSize / 2;
             int playerCenterY = screenY + gp.tileSize / 2;
 
-            int indicatorX = playerCenterX + (int)(50 * Math.cos(angulo));
-            int indicatorY = playerCenterY + (int)(50 * Math.sin(angulo));
+            int indicatorX = playerCenterX + (int) (50 * Math.cos(angulo));
+            int indicatorY = playerCenterY + (int) (50 * Math.sin(angulo));
 
             g2.translate(indicatorX, indicatorY);
             g2.rotate(angulo);
-            g2.fillRect(-5,-5,10,10);
+            g2.fillRect(-5, -5, 10, 10);
             g2.rotate(-angulo);
 
             g2.setTransform(old);
         }
-
-        //System.out.println("Health: " + health + " Max Health: " + maxHealth + " Damage: " + damage);
     }
+
 
     public void checkClosestEnemy() {
         double closestDistance = Double.MAX_VALUE;

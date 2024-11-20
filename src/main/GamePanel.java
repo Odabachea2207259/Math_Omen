@@ -206,6 +206,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             ui.draw(g2); //UI
+            player.drawExperienceBar(g2);
+            player.drawScore(g2);
         }
 
         //BORRA TODO
