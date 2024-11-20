@@ -287,7 +287,7 @@ public class Player extends Entity {
     public void checkLevelUp(){
         if(exp >= nextLevelExp){
             level++;
-            nextLevelExp = nextLevelExp * 2;
+            nextLevelExp = nextLevelExp + 25;
             exp = 0;
             health += 25;
             maxHealth = health;
