@@ -533,7 +533,7 @@ public class UI {
                 g2.setColor(Color.WHITE);
                 g2.drawString(abc, x, y);
                 
-                //drawMenuOption("^", y, selectedOption);
+                drawMenuOption("^", y + 20, selectedOption);
                 messageDisplay.draw();
             }
         }
