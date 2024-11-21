@@ -533,7 +533,7 @@ public class UI {
                 g2.setColor(Color.WHITE);
                 g2.drawString(abc, x, y);
                 
-                drawMenuOption("^", y + 20, selectedOption);
+                drawMenuOption("^", y + 50, selectedOption);
                 messageDisplay.draw();
             }
         }
@@ -551,7 +551,7 @@ public class UI {
         }
 
         public void drawMenuOption(String text, int y, int commandIndex) {
-            int x = getXforCenteredText(text);
+            int x = getXforCenteredText(text) - 24 + commandIndex * 24;
             g2.drawString(text, x, y);
         }
 
@@ -562,6 +562,7 @@ public class UI {
         public void selectOption() {
             String abc = new String(initials);
             System.out.println(abc);
+            done = true;
         }
     }
 }

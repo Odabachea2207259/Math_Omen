@@ -237,7 +237,7 @@ public class KeyHandler implements KeyListener {
                     }
                 }
                 case KeyEvent.VK_D -> {
-                    if (registerScreen.selectedOption < 3) {
+                    if (registerScreen.selectedOption < 2) {
                         registerScreen.selectedOption++;
                         registerScreen.moveToLetter();
 
