@@ -53,7 +53,7 @@ public class Player extends Entity {
 
         alive = true;
         speed = 16;
-        health = 100;
+        health = 1;
         maxHealth = health;
         direction = "up";
         exp = 0;
@@ -181,12 +181,10 @@ public class Player extends Entity {
         g2.setFont(new Font("Arial", Font.BOLD, 36));
         String total = expTotal + "000";
         int messageX = gp.ui.getXforCenteredText(total);
-
         g2.setColor(Color.BLACK);
         g2.drawString(total, messageX + 4, gp.screenHeight - 36);
         g2.setColor(Color.WHITE);
         g2.drawString(total, messageX, gp.screenHeight - 40);
-
     }
 
     public void draw(Graphics2D g2) {

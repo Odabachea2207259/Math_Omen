@@ -2,12 +2,11 @@ package main;
 
 import OperationGenerator.OperationGenerator;
 import OperationGenerator.Operation;
-import entity.Enemy;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Random;
+import java.util.SplittableRandom;
 
 
 public class UI {
@@ -23,6 +22,7 @@ public class UI {
     public OperationScreen operationScreen;
     public CharacterScreen characterScreen;
     public MessageDisplay messageDisplay;
+    public RegisterScreen registerScreen;
 
     OperationGenerator generator = new OperationGenerator();
     Operation operation;
@@ -56,6 +56,7 @@ public class UI {
         operationScreen = new OperationScreen();
         characterScreen = new CharacterScreen();
         messageDisplay = new MessageDisplay();
+        registerScreen = new RegisterScreen();
     }
 
     public void draw(Graphics2D g2) {
@@ -67,7 +68,6 @@ public class UI {
                 titleScreen.draw();
                 break;
             case GamePanel.playState:
-                messageDisplay.draw();
                 break;
             case GamePanel.pauseState:
                 pauseScreen.draw(g2);
@@ -84,6 +84,8 @@ public class UI {
             case GamePanel.characterState:
                 characterScreen.draw();
                 break;
+            case GamePanel.registerState:
+                registerScreen.draw();
             default:
                 break;
         }
@@ -419,6 +421,7 @@ public class UI {
         }
     }
 
+    // Clase anidada para la seleccion de personaje
     public class CharacterScreen{
         final int frameX = gp.tileSize*2;
         final int frameY = gp.tileSize;
@@ -494,9 +497,71 @@ public class UI {
                 g2.setColor(Color.RED);
                 int textLength = (int) g2.getFontMetrics().getStringBounds(message, g2).getWidth();
                 int x = gp.screenWidth / 2 - textLength / 2;
-                int y = gp.screenHeight / 2 - (gp.tileSize * 3);
+                int y = 140;
                 g2.drawString(message, x, y);
+
+                //registerScreen.draw();
             }
+        }
+    }
+
+    public class RegisterScreen {
+        public boolean done = false;
+        public int selectedOption = 0;
+        public int selectedLetter = 95;
+
+        public char []initials = {'_', '_', '_'};
+
+        public void draw() {
+            if (deadPlayer) {
+                g2.setColor(Color.white);
+                g2.setStroke(new BasicStroke(6));
+                g2.drawRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, 400, 40, 40);
+
+                int alpha = 200;
+                Color overlayColor = new Color(0, 0, 0, alpha);
+                g2.setColor(overlayColor);
+                g2.fillRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, 400, 40, 40);
+
+                g2.setFont(arial_40);
+
+                String abc = new String(initials);
+
+                int x = getXforCenteredText(abc);
+                int y = gp.screenHeight / 2 - 100;
+
+                g2.setColor(Color.WHITE);
+                g2.drawString(abc, x, y);
+                
+                //drawMenuOption("^", y, selectedOption);
+                messageDisplay.draw();
+            }
+        }
+
+        public void changeLetter() {
+            if (registerScreen.selectedLetter < 65) {
+                registerScreen.selectedLetter = 90;
+            }
+
+            if (registerScreen.selectedLetter > 90) {
+                registerScreen.selectedLetter = 65;
+            }
+
+            initials[selectedOption] = (char) selectedLetter;
+        }
+
+        public void drawMenuOption(String text, int y, int commandIndex) {
+            int x = getXforCenteredText(text);
+            g2.drawString(text, x, y);
+        }
+
+        public void moveToLetter() {
+            selectedLetter = initials[selectedOption];
+        }
+
+        public void selectOption() {
+            String abc = new String(initials);
+            System.out.println(abc);
         }
     }
 }

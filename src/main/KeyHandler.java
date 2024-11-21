@@ -33,6 +33,9 @@ public class KeyHandler implements KeyListener {
             case GamePanel.characterState:
                 handleCharacterState(code);
                 break;
+            case GamePanel.registerState:
+                handleRegisterInput(code);
+                break;
             default:
                 break;
         }
@@ -216,6 +219,41 @@ public class KeyHandler implements KeyListener {
                     enterPressed = true;
                     gp.ui.operationScreen.selectOption();
                     //processAnswer(operationScreen.selectedOption); // Procesar la respuesta seleccionada
+                }
+            }
+        }
+    }
+
+    private void handleRegisterInput(int code) {
+        UI.RegisterScreen registerScreen = gp.ui.registerScreen;
+
+        if(!registerScreen.done) {
+            switch (code) {
+                case KeyEvent.VK_A -> {
+                    if (registerScreen.selectedOption > 0) {
+                        registerScreen.selectedOption--;
+                        registerScreen.moveToLetter();
+
+                    }
+                }
+                case KeyEvent.VK_D -> {
+                    if (registerScreen.selectedOption < 3) {
+                        registerScreen.selectedOption++;
+                        registerScreen.moveToLetter();
+
+                    }
+                }
+                case KeyEvent.VK_W -> {
+                    registerScreen.selectedLetter--;
+                    registerScreen.changeLetter();
+                }
+                case KeyEvent.VK_S -> {
+                    registerScreen.selectedLetter++;
+                    registerScreen.changeLetter();
+                }
+                case KeyEvent.VK_ENTER -> {
+                    enterPressed = true;
+                    gp.ui.registerScreen.selectOption();
                 }
             }
         }

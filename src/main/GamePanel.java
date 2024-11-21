@@ -61,6 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int pauseState = 2;
     public static final int operationState = 3;
     public static final int characterState = 4;
+    public static final int registerState = 5;
 
     //CONSTRUCTOR
     public GamePanel() {
@@ -128,6 +129,9 @@ public class GamePanel extends JPanel implements Runnable {
             synchronized (player){
                 if (player.alive) {
                     player.update(); //ACTUALIZAR JUGADOR
+                }
+                else{
+                    gameState = registerState;
                 }
             }
 
