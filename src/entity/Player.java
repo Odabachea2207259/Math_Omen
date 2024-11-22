@@ -147,7 +147,7 @@ public class Player extends Entity {
 
         if (this.health <= 0) {
             gp.spawner.stopEnemySpawner();
-            gp.ui.deadPlayer = true;
+            //gp.ui.deadPlayer = true;
             health = 0;
             alive = false;
         }

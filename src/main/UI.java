@@ -39,7 +39,7 @@ public class UI {
         this.foo = foo;
     }
 
-    public boolean deadPlayer = false;
+    //public boolean deadPlayer = false;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -93,6 +93,7 @@ public class UI {
                 characterScreen.draw();
                 break;
             case GamePanel.registerState:
+                registerScreen.load();
                 registerScreen.draw();
             default:
                 break;
@@ -573,7 +574,7 @@ public class UI {
         private String message = "GAME OVER!";
 
         public void draw() {
-            if (messageOn && deadPlayer) {
+            if (messageOn && !gp.player.alive) {
                 g2.setFont(arial_100);
                 g2.setColor(Color.RED);
                 int textLength = (int) g2.getFontMetrics().getStringBounds(message, g2).getWidth();
@@ -590,11 +591,25 @@ public class UI {
         public boolean done = false;
         public int selectedOption = 0;
         public int selectedLetter = 95;
-
+        public boolean loaded = false;
         public char []initials = {'_', '_', '_'};
 
+
+        public void load() {
+            if (!loaded) {
+                done = false;
+                selectedOption = 0;
+                selectedLetter = 95;
+
+                for (int i = 0; i < initials.length; i++) {
+                    initials[i] = '_';
+                }
+                loaded = true;
+            }
+        }
+
         public void draw() {
-            if (deadPlayer) {
+            if (!gp.player.alive) {
                 g2.setColor(Color.white);
                 g2.setStroke(new BasicStroke(6));
                 g2.drawRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, 400, 40, 40);
@@ -645,7 +660,7 @@ public class UI {
             gp.users.add(new User(abc,gp.player.expTotal));
             gp.users.sort((u1, u2) -> Integer.compare(u2.getPuntos(), u1.getPuntos()));
             gp.saver.escribirArchivo("res/Game.ser");
-            done = true;
+            loaded = false;
         }
     }
 }

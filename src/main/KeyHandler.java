@@ -273,6 +273,9 @@ public class KeyHandler implements KeyListener {
 
                     gp.ui.titleScreen.titleScreenState = 2;
                     gp.gameState = gp.titleState;
+                    gp.player.alive = true;
+                    gp.player.invincible = false;
+                    registerScreen.done = true;
                 }
             }
         }
