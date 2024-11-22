@@ -365,10 +365,6 @@ public class UI {
 
             textY += gp.tileSize*2;
             g2.setColor(selectedOption == 2 ? Color.YELLOW : Color.WHITE);
-            g2.drawString("Control",textX,textY);
-
-            textY += gp.tileSize*2;
-            g2.setColor(selectedOption == 3 ? Color.YELLOW : Color.WHITE);
             g2.drawString("Regresar",textX,textY);
 
             g2.setColor(selectedOption == 0 ? Color.YELLOW : Color.WHITE);
