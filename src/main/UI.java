@@ -6,13 +6,12 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Random;
-import java.util.SplittableRandom;
 
 
 public class UI {
     public GamePanel gp;
-    private Font arial_100, arial_40;
-    private Font arial_title;
+    private final Font arial_100, arial_40;
+    private final Font arial_title;
     private Graphics2D g2;
 
     private Image backgroundImage;
@@ -24,11 +23,12 @@ public class UI {
     public MessageDisplay messageDisplay;
     public RegisterScreen registerScreen;
 
+    // RandomColorGenerator.nextColor()
+
     OperationGenerator generator = new OperationGenerator();
     Operation operation;
     int operandsToGen = 2;
     String op;
-    int currentOption = 0;
     int foo = 0;
 
     public void setFoo(int foo) {
@@ -98,8 +98,8 @@ public class UI {
 
     public int getXforAlignToRightText(String text, int tailX) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = tailX - length;
-        return x;
+        //int x = tailX - length;
+        return tailX - length;
     }
 
     public int getYforCenteredText(String text) {
@@ -138,8 +138,9 @@ public class UI {
             int x = getXforCenteredText(title);
             int y = gp.tileSize * 3;
 
-            g2.setColor(Color.gray);
+            g2.setColor(Color.GRAY);
             g2.drawString(title, x, y + 80);
+
             g2.setColor(Color.WHITE);
             g2.drawString(title, x, y + 70);
 
@@ -183,9 +184,8 @@ public class UI {
 
     // Clase anidada para la pantalla de pausa
     public class PauseScreen {
-
-        private Font arial_100 = new Font("Arial", Font.PLAIN, 100); // Fuente para el título
-        private Font arial_50 = new Font("Arial", Font.PLAIN, 50);  // Fuente para las opciones
+        private final Font arial_100 = new Font("Arial", Font.PLAIN, 100); // Fuente para el título
+        private final Font arial_50 = new Font("Arial", Font.PLAIN, 50);  // Fuente para las opciones
         public int selectedOption = 0; // Para saber qué opción está seleccionada (0: Continuar, 1: Opciones, 2: Salir)
         public int pauseScreenState = 0;
 
