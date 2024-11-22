@@ -4,10 +4,12 @@ import main.GamePanel;
 import main.KeyHandler;
 import main.UI;
 import objects.OBJ_Bullet;
+import serialization.User;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.Scanner;
 
 public class Player extends Entity {
 
@@ -144,6 +146,7 @@ public class Player extends Entity {
         checkLevelUp();
 
         if (this.health <= 0) {
+            gp.spawner.stopEnemySpawner();
             gp.ui.deadPlayer = true;
             health = 0;
             alive = false;
@@ -292,7 +295,6 @@ public class Player extends Entity {
         projectile.set(worldX ,worldY,dx,dy,true,angulo);
         gp.projectileList.add(projectile);
     }
-
 
 
     public void checkLevelUp(){

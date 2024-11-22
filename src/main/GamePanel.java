@@ -1,14 +1,12 @@
 package main;
 
 import entity.*;
-import entity.Enemies.EnemyFactory;
+import serialization.*;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -35,7 +33,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     TileManager tileManager = new TileManager(this); //CONSTRUCTOR MAPA
     KeyHandler keyHandler = new KeyHandler(this); //MANEJA LAS ENTRADAS DE TECLADO
-    Random randomNumbers = new Random(); //SE NECESITA GG
     public CollisionChecker cChecker = new CollisionChecker(this); //CHECKA COLISIONES DE JUGADORES Y ENEMIGOS
 
     Sound backgroundMusic  = new Sound();
@@ -46,12 +43,16 @@ public class GamePanel extends JPanel implements Runnable {
     int time = 0;
 
     public Player player = new Player(this,keyHandler); //JUGADOR
+    public Spawner spawner = new Spawner(this);
     public ArrayList<Enemy> enemies = new ArrayList<>(); //TODOS LOS ENEMIGOS
-    private int enemiesMultiplier = 1;
+    public int enemiesMultiplier = 1;
     public ArrayList<Projectile> projectileList = new ArrayList<>(); //PROJECTILES
 
+    public ArrayList<User> users = new ArrayList<>();
+    public Saver saver = new Saver(this);
+
     JLabel scoreCantEnemies; //PARA VER CUANTOS ENEMIGOS EN PANTALLA
-    int cantEnemies = 0;
+    public int cantEnemies = 0;
 
     //COSAS DE LA UI, MENU, JUEGO, PAUSA
     public UI ui = new UI(this); //UI DEL JUEGO COMPLETO
@@ -74,7 +75,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         setupGame();
-        //startEnemySpawnTimer(this);
     }
 
     public void setScoreLabel(JLabel scoreLabel) {
@@ -85,6 +85,8 @@ public class GamePanel extends JPanel implements Runnable {
         //INICIA PROGRAMA EN EL TITULO
         gameState = titleState;
         playMusic(2);
+        saver.leerArchivo("res/Game.ser");
+        users.sort((u1, u2) -> Integer.compare(u2.getPuntos(), u1.getPuntos()));
     }
 
     public void startGameThread(){
@@ -122,7 +124,7 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == playState){
             changeMusic(0);
             if(time == 0){
-                startEnemySpawnTimer(this);
+                spawner.startEnemySpawnTimer();
                 time++;
             }
 
@@ -191,6 +193,7 @@ public class GamePanel extends JPanel implements Runnable {
             enemies.clear();
             projectileList.clear();
             player.setDefaultValues();
+            time = 0;
             ui.draw(g2); // COMO EL GAMESTATE ESTA POR DEFAULT EN TITLESTATE SE DIBUJARA EL TITULO
         }
         else{
@@ -241,40 +244,4 @@ public class GamePanel extends JPanel implements Runnable {
         playMusic(i);
         currentSongIndex = i;
     }
-
-    private void startEnemySpawnTimer(GamePanel gp) {
-        int delay = 2000;
-
-        Timer enemySpawnTimer = new Timer(delay, e -> {
-
-            int sign = randomNumbers.nextInt(2);
-            int startX = (int) (Math.random() * screenWidth/2);
-            if(sign == 0){
-                startX -= screenWidth;
-            }
-            else{
-                startX += screenWidth;
-            }
-            sign = randomNumbers.nextInt(2);
-            int startY = (int) (Math.random() * screenHeight/2);
-            if(sign == 0){
-                startY -= screenHeight;
-            }
-            else{
-                startY += screenHeight;
-            }
-
-            synchronized (enemies) {
-                Enemy newEnemy = EnemyFactory.createRandomEnemy(gp,startX,startY,enemiesMultiplier);
-                enemies.add(newEnemy);
-                System.out.println(newEnemy + "\n");
-                System.out.println(player + "\n");
-            }
-
-            cantEnemies++;
-        });
-
-        enemySpawnTimer.start();
-    }
-
 }

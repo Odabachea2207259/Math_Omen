@@ -2,9 +2,12 @@ package main;
 
 import OperationGenerator.OperationGenerator;
 import OperationGenerator.Operation;
+import serialization.User;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -26,6 +29,7 @@ public class UI {
     // RandomColorGenerator.nextColor()
 
     OperationGenerator generator = new OperationGenerator();
+    ArrayList<Color> colors = new ArrayList<>();
     Operation operation;
     int operandsToGen = 2;
     String op;
@@ -57,6 +61,10 @@ public class UI {
         characterScreen = new CharacterScreen();
         messageDisplay = new MessageDisplay();
         registerScreen = new RegisterScreen();
+
+        for(int i = 0; i < 5; i++){
+            colors.add(RandomColorGenerator.nextColor());
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -107,10 +115,23 @@ public class UI {
         return gp.screenHeight / 2 - length / 2;
     }
 
+    public static String ordinal(int i) {
+        String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+        switch (i % 100) {
+            case 11:
+            case 12:
+            case 13:
+                return i + "th";
+            default:
+                return i + suffixes[i % 10];
+        }
+    }
+
     // Clase anidada para la pantalla de título
     public class TitleScreen {
         public int commandNum = 0;
         public int titleScreenState = 0;
+        public ArrayList<User> users = gp.users;
 
         public void draw() {
             g2.setFont(arial_40);
@@ -120,6 +141,8 @@ public class UI {
                 drawMainMenu();
             } else if (titleScreenState == 1) {
                 drawCharacterSelection();
+            } else if (titleScreenState == 2){
+                drawScoreboardScreen();
             }
         }
 
@@ -171,6 +194,64 @@ public class UI {
 
             drawMenuOption("Boy", y + gp.tileSize * 3, 0);
             drawMenuOption("Girl", y + gp.tileSize * 6, 1);
+        }
+
+        public void drawScoreboardScreen(){
+
+            g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(32F));
+
+            if (backgroundImage != null) {
+                g2.drawImage(backgroundImage, 0, 0, gp.screenWidth, gp.screenHeight, null);
+            } else {
+                // Si no hay imagen, rellenar con color de fondo negro
+                g2.setColor(new Color(0, 0, 0));
+                g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+            }
+
+            int frameX = gp.tileSize*6;
+            int frameY = gp.tileSize;
+            int frameWidth = gp.tileSize*8;
+            int frameHeight = gp.tileSize*10;
+            int cant = 0;
+
+            int textX;
+            int textY;
+
+            String text = "SCOREBOARDS";
+            textX = getXforCenteredText(text);
+            textY = frameY + gp.tileSize;
+            g2.drawString(text,textX,textY);
+
+            textX = frameX + gp.tileSize;
+
+            for(User users : gp.users){
+                g2.setColor(colors.get(cant));
+                textY += gp.tileSize*2;
+                g2.drawString( ordinal(cant + 1) + "  " + users.getNombre(),textX,textY);
+                if(cant < 4){
+                    cant++;
+                }
+                else{
+                    break;
+                }
+            }
+
+            cant = 0;
+            textY = frameY + gp.tileSize;
+
+            for(User users : gp.users){
+                textX = frameX + gp.tileSize*5;
+                textY += gp.tileSize*2;
+                g2.setColor(colors.get(cant));
+                g2.drawString(users.getPuntos() + "000",textX,textY);
+                if(cant < 4){
+                    cant++;
+                }
+                else{
+                    break;
+                }
+            }
         }
 
         public void drawMenuOption(String text, int y, int commandIndex) {
@@ -561,7 +642,9 @@ public class UI {
 
         public void selectOption() {
             String abc = new String(initials);
-            System.out.println(abc);
+            gp.users.add(new User(abc,gp.player.expTotal));
+            gp.users.sort((u1, u2) -> Integer.compare(u2.getPuntos(), u1.getPuntos()));
+            gp.saver.escribirArchivo("res/Game.ser");
             done = true;
         }
     }

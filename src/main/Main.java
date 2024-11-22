@@ -12,6 +12,8 @@ public class Main {
         window.setResizable(true);
         window.setTitle("Math Omen");
 
+        ImageIcon im = new ImageIcon("/projectile/Bullet.png");
+        window.setIconImage(im.getImage());
         GamePanel gamePanel = new GamePanel();
 
         JLabel cantEnemies = new JLabel("Cantidad de enemigos: 0");

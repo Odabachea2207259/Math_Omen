@@ -1,5 +1,7 @@
 package main;
 
+import serialization.User;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -22,6 +24,7 @@ public class KeyHandler implements KeyListener {
                 handleTitleScreenInput(code);
                 break;
             case GamePanel.playState:
+                gp.ui.titleScreen.titleScreenState = 0;
                 handleGamePlayInput(code);
                 break;
             case GamePanel.pauseState:
@@ -65,8 +68,11 @@ public class KeyHandler implements KeyListener {
 
                 switch (titleScreen.commandNum) {
                     case 0 -> titleScreen.titleScreenState = 1; // Ir a selección de personaje
-                    case 1 -> {} // IMPLEMENTAR SCOREBOARDS
-                    case 2 -> System.exit(0); // Salir del juego
+                    case 1 -> titleScreen.titleScreenState = 2;// IMPLEMENTAR SCOREBOARDS
+                    case 2 -> {
+                        gp.saver.escribirArchivo("res/Game.ser");
+                        System.exit(0);
+                    } // Salir del juego
                 }
             }
         } else if (titleScreen.titleScreenState == 1) {
@@ -76,6 +82,8 @@ public class KeyHandler implements KeyListener {
             } else if (code == KeyEvent.VK_S) {
                 titleScreen.commandNum++;
                 gp.playSoundEffect(10);
+            } else if (code == KeyEvent.VK_ESCAPE) {
+                titleScreen.titleScreenState = 0;
             }
 
             // Limitar los valores de commandNum en selección de personaje
@@ -99,6 +107,10 @@ public class KeyHandler implements KeyListener {
                 } else if (titleScreen.commandNum == 2) {
                     titleScreen.titleScreenState = 0; // Regresar al menú principal
                 }
+            }
+        } else if(titleScreen.titleScreenState == 2) {
+            if (code == KeyEvent.VK_ENTER) {
+                titleScreen.titleScreenState = 0;
             }
         }
     }
@@ -142,8 +154,9 @@ public class KeyHandler implements KeyListener {
                             pauseScreen.pauseScreenState = 1;}
                         case 2 -> {
                             gp.player.time = 0;
-                            gp.ui.titleScreen.titleScreenState = 0;
+                            gp.time = 0;
                             gp.gameState = gp.titleState;
+                            gp.spawner.stopEnemySpawner();
                         }
                     }
                 }
@@ -185,7 +198,10 @@ public class KeyHandler implements KeyListener {
                 }
                 case KeyEvent.VK_ENTER -> {
                     switch (pauseScreen.selectedOption) {
-                        case 3 -> pauseScreen.pauseScreenState = 0;
+                        case 3 -> {
+                            pauseScreen.pauseScreenState = 0;
+                            pauseScreen.selectedOption = 1;
+                        }
                     }
                 }
             }
@@ -254,6 +270,9 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_ENTER -> {
                     enterPressed = true;
                     gp.ui.registerScreen.selectOption();
+
+                    gp.ui.titleScreen.titleScreenState = 2;
+                    gp.gameState = gp.titleState;
                 }
             }
         }
