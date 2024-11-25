@@ -26,6 +26,7 @@ public abstract class Enemy extends Entity{
     protected abstract void loadEnemyImages();
 
 
+
     // Actualiza la posición del enemigo (por ejemplo, movimiento hacia el jugador)
     public void update(int playerX, int playerY) {
 
@@ -34,15 +35,18 @@ public abstract class Enemy extends Entity{
         if (worldY < playerY && canDown){ worldY += speed; direction = "down";}
         if (worldY > playerY && canUp){ worldY -= speed; direction = "up";}
 
+        // Actualizar el area solida del enemigo
         solidArea.setBounds(worldX + 8, worldY + 8, 32, 32);
 
         gp.cChecker.checkCollisionWithOtherEnemies(this);
         gp.cChecker.checkCollisionWithPlayer(playerX,playerY);
 
+        // Actualizar la animación del sprite
         spriteCounter++;
         if(spriteCounter > 6){
+
             spriteNum++;
-            if(spriteNum > 4){
+            if (spriteNum > 4) {
                 spriteNum = 1;
             }
             spriteCounter = 0;
@@ -76,6 +80,7 @@ public abstract class Enemy extends Entity{
     @Override
     public String toString() {
         return "Tipo: " + nombre + "\n\tVida: " + health + "\n\tDamage: " + damage + "\n\tExp: " + exp;
+
     }
 
     public void improveEnemies(){

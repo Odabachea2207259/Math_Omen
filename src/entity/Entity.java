@@ -60,4 +60,5 @@ public class Entity {
     public Projectile projectile;
     public boolean alive;
     public double dx,dy;
+
 }

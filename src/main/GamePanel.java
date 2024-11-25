@@ -10,12 +10,11 @@ import java.util.ArrayList;
 
 
 public class GamePanel extends JPanel implements Runnable {
-
-    final int originalTileSize = 16; //Tamaño de los elementos
+    //Tamaño de los elementos
+    final int originalTileSize = 16;
     final int scale = 3;
-
-    public final int tileSize = originalTileSize * scale; //48 px x 48 px
-
+    //48 px x 48 px
+    public final int tileSize = originalTileSize * scale;
     //4:3 ratio
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 15;
@@ -64,6 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int characterState = 4;
     public static final int registerState = 5;
 
+
     //CONSTRUCTOR
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -98,6 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
         double drawInterval = 1000000000/FPS;
+
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -224,6 +225,7 @@ public class GamePanel extends JPanel implements Runnable {
         backgroundMusic.play();
         backgroundMusic.loop();
     }
+
 
     public void stopMusic(){
         backgroundMusic.stop();

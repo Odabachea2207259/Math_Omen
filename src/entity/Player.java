@@ -11,7 +11,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Scanner;
 
+
 public class Player extends Entity {
+    // Constantes
+    public static final double DETECTION_RANGE = 200; // Rango de deteccion en píxeles
 
     public KeyHandler kh;
 
@@ -40,6 +43,7 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler kh) {
         super(gp);
         this.kh = kh;
+        this.maxHealth = 100;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -57,6 +61,7 @@ public class Player extends Entity {
         speed = 16;
         health = 1;
         maxHealth = health;
+
         direction = "up";
         exp = 0;
         expTotal = 0;
@@ -85,16 +90,19 @@ public class Player extends Entity {
         if (kh.upPressed && canUp) {
             deltaY = -1;
             //worldY -= speed;
+
             direction = "up";
         }
         if (kh.downPressed && canDown) {
             deltaY = 1;
             //worldY += speed;
+
             direction = "down";
         }
         if (kh.leftPressed && canLeft) {
             deltaX = -1;
             //worldX -= speed;
+
             direction = "left";
         }
         if (kh.rightPressed && canRight) {
@@ -152,6 +160,11 @@ public class Player extends Entity {
             alive = false;
         }
 
+        // Dispara hacia el enemigo más cercano
+        shootAtClosestEnemy();
+
+        // Actualiza las balas
+        updateBullets();
     }
 
     // Nuevo metodo para manejar la barra de experiencia
@@ -179,6 +192,7 @@ public class Player extends Entity {
         int messageX = gp.ui.getXforCenteredText(resultMessage);
         g2.drawString(resultMessage, messageX, 30);
     }
+
 
     public void drawScore(Graphics2D g2) {
         g2.setFont(new Font("Arial", Font.BOLD, 36));
@@ -331,5 +345,51 @@ public class Player extends Entity {
     @Override
     public String toString() {
         return "Health: " + health + "\tMax Healt: " + maxHealth + "\tDamage: " + damage;
+
     }
+
+    private void shootAtClosestEnemy() {
+        long currentTime = System.currentTimeMillis();
+        Enemy closestEnemy = findClosestEnemy();
+
+        // Tiempo en milisegundos
+        long shotCooldown = 500;
+
+        if (closestEnemy != null && currentTime - lastShotTime >= shotCooldown) {
+            double distance = Math.hypot(this.worldX - closestEnemy.worldX, this.worldY - closestEnemy.worldY);
+            if (distance <= DETECTION_RANGE) {
+                // Verifica si el enemigo está dentro del rango
+                Bullet bullet = getBullet(closestEnemy);
+                bullets.add(bullet);
+                lastShotTime = currentTime;
+            }
+        }
+    }
+
+    private Bullet getBullet(Enemy closestEnemy) {
+        int bulletStartX = this.worldX + (gp.tileSize / 2) - (Bullet.BULLET_WIDTH / 2);
+        int bulletStartY = this.worldY + (gp.tileSize / 2) - (Bullet.BULLET_HEIGHT / 2);
+
+        // Usa las coordenadas del enemigo como destino
+        int targetX = closestEnemy.worldX;
+        int targetY = closestEnemy.worldY;
+
+        // Crea la bala y pasa las coordenadas del enemigo como destino
+        return new Bullet(gp, bulletStartX, bulletStartY, targetX, targetY);
+    }
+
+    private void updateBullets() {
+        Iterator<Bullet> bulletIterator = bullets.iterator();
+
+        while (bulletIterator.hasNext()) {
+            Bullet bullet = bulletIterator.next();
+            bullet.update();
+
+            // Remover balas que han alcanzado su rango o están fuera de los límites
+            if (bullet.isOutOfBounds() || bullet.hasReachedMaxDistance()) {
+                bulletIterator.remove();
+            }
+        }
+    }
+
 }
