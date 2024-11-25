@@ -1,12 +1,13 @@
 package main;
 
 import entity.*;
+import serialization.*;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class GamePanel extends JPanel implements Runnable {
     //Tamaño de los elementos
@@ -19,53 +20,85 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxScreenRow = 15;
     public final int screenWidth = tileSize * maxScreenCol; // 768 px
     public final int screenHeight = tileSize * maxScreenRow; // 576 px
-    // Tamaño del mapa
+
     private final int multiplicador = 9;
     public final int maxWorldCol = maxScreenCol * multiplicador;
     public final int maxWorldRow = maxScreenRow * multiplicador;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
-    // Mapa del juego principal.
-    TileManager tileManager = new TileManager(this);
-    KeyHandler keyHandler = new KeyHandler();
-    Random randomNumbers = new Random();
-    public CollisionChecker cChecker = new CollisionChecker(this);
-    // Hilo del juego principal
-    Thread gameThread;
-    int FPS = 60;
-    // Objetos para el juego
-    public Player player = new Player(this,keyHandler); // Jugados
-    public final ArrayList<Enemy> enemies = new ArrayList<>(); // Lista de enemigos.
-    // Label para la cantidad de enemigos.
-    JLabel scoreCantEnemies;
-    int cantEnemies = 0;
 
+    //FPS DEL JUEGO
+    int FPS = 60;
+
+    TileManager tileManager = new TileManager(this); //CONSTRUCTOR MAPA
+    KeyHandler keyHandler = new KeyHandler(this); //MANEJA LAS ENTRADAS DE TECLADO
+    public CollisionChecker cChecker = new CollisionChecker(this); //CHECKA COLISIONES DE JUGADORES Y ENEMIGOS
+
+    Sound backgroundMusic  = new Sound();
+    Sound soundEffect  = new Sound();
+    public int currentSongIndex = -1;
+
+    Thread gameThread; //HILO PRINCIPAL DEL JUEGO
+    int time = 0;
+
+    public Player player = new Player(this,keyHandler); //JUGADOR
+    public Spawner spawner = new Spawner(this);
+    public ArrayList<Enemy> enemies = new ArrayList<>(); //TODOS LOS ENEMIGOS
+    public int enemiesMultiplier = 1;
+    public ArrayList<Projectile> projectileList = new ArrayList<>(); //PROJECTILES
+
+    public ArrayList<User> users = new ArrayList<>();
+    public Saver saver = new Saver(this);
+
+    JLabel scoreCantEnemies; //PARA VER CUANTOS ENEMIGOS EN PANTALLA
+    public int cantEnemies = 0;
+
+    //COSAS DE LA UI, MENU, JUEGO, PAUSA
+    public UI ui = new UI(this); //UI DEL JUEGO COMPLETO
+    public int gameState;
+    public static final int titleState = 0;
+    public static final int playState = 1;
+    public static final int pauseState = 2;
+    public static final int operationState = 3;
+    public static final int characterState = 4;
+    public static final int registerState = 5;
+
+
+    //CONSTRUCTOR
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.BLACK);
 
         //Mejorar el rendimiento
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
 
-        startEnemySpawnTimer(this);
+        setupGame();
     }
 
     public void setScoreLabel(JLabel scoreLabel) {
         this.scoreCantEnemies = scoreLabel;
     }
 
-    public void startGameThread(){
+    public void setupGame(){
+        //INICIA PROGRAMA EN EL TITULO
+        gameState = titleState;
+        playMusic(2);
+        saver.leerArchivo("res/Game.ser");
+        users.sort((u1, u2) -> Integer.compare(u2.getPuntos(), u1.getPuntos()));
+    }
 
+    public void startGameThread(){
+        //INICIA HILO DEL JUEGO
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     @Override
     public void run() {
+        double drawInterval = 1000000000/FPS;
 
-        double drawInterval = (double) 1000000000 /FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -86,16 +119,66 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-
-        player.update();
-
-        synchronized(enemies) {
-            for (Enemy enemy : enemies) {
-                enemy.update(player.worldX, player.worldY);
+        //SI EL JUEGO ESTA EN ESTADO PLAY
+        if(gameState == playState){
+            changeMusic(0);
+            if(time == 0){
+                spawner.startEnemySpawnTimer();
+                time++;
             }
+
+            synchronized (player){
+                if (player.alive) {
+                    player.update(); //ACTUALIZAR JUGADOR
+                }
+                else{
+                    gameState = registerState;
+                }
+            }
+
+            synchronized (enemies){
+                if(ui.operationScreen.wrong){
+                    enemiesMultiplier++;
+                    ui.operationScreen.wrong = false;
+                }
+                for(int i = 0; i < enemies.size(); i++){
+                    Enemy e = enemies.get(i);
+                    if(e.alive){
+                        e.update(player.worldX, player.worldY);
+                    }
+                    else {
+                        enemies.remove(e);
+                    }
+                }
+            }
+
+
+            //""PRUEBA""
+            synchronized (projectileList) {
+                for (int i = 0; i < projectileList.size(); i++) {
+                    Projectile p = projectileList.get(i);
+                    if(p.alive){
+                        p.update();
+                    }
+                    else{
+                        projectileList.remove(i);
+                    }
+                }
+            }
+
+            scoreCantEnemies.setText("Cantidad de enemigos: " + enemies.size() + ""); //ACTUALIZA CANT ENEMIGOS
         }
 
-        scoreCantEnemies.setText(cantEnemies + "");
+        //LO QUE HARA SI EL JUEGO ESTA EN PAUSA
+        if(gameState == pauseState){
+            //FALTA IMPLEMENTAR MENU DE PAUSA EN UI
+            //stopMusic();
+        }
+
+        if(gameState == operationState){
+            //stopMusic();
+        }
+
     }
 
     public void paintComponent(Graphics g){
@@ -103,68 +186,62 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        tileManager.draw(g2);
+        //DIBUJAR EL TITULO
+        if(gameState == titleState){
+            changeMusic(2);
+            enemies.clear();
+            projectileList.clear();
+            player.setDefaultValues();
+            time = 0;
+            ui.draw(g2); // COMO EL GAMESTATE ESTA POR DEFAULT EN TITLESTATE SE DIBUJARA EL TITULO
+        }
+        else{
 
-        player.draw(g2);
+            tileManager.draw(g2); //MAPA
 
-        for(Enemy enemy : enemies){
-            enemy.draw(g2,player);
+            player.draw(g2); //JUGADOR
+
+            synchronized (enemies) {
+                for (Enemy enemy : enemies) {
+                    enemy.draw(g2, player); //CADA ENEMIGO
+                }
+            }
+
+            for (Projectile projectile : projectileList) {
+                projectile.draw(g2); //LOS PROYECTILES ""EN PRUEBA""
+            }
+
+            ui.draw(g2); //UI
+            player.drawExperienceBar(g2);
+            player.drawScore(g2);
         }
 
-        drawPlayerHealthBar(g2);
-
+        //BORRA TODO
         g2.dispose();
     }
 
-    private void startEnemySpawnTimer(GamePanel gp) {
-        int delay = 2000;
-
-        Timer enemySpawnTimer = new Timer(delay, _ -> {
-
-            int sign = randomNumbers.nextInt(2);
-            int startX = (int) (Math.random() * screenWidth/2);
-            if(sign == 0){
-                startX -= screenWidth;
-            }
-            else{
-                startX += screenWidth;
-            }
-            sign = randomNumbers.nextInt(2);
-            int startY = (int) (Math.random() * screenHeight/2);
-            if(sign == 0){
-                startY -= screenHeight;
-            }
-            else{
-                startY += screenHeight;
-            }
-
-            synchronized (enemies) {
-                enemies.add(new Enemy(gp, startX, startY));
-            }
-
-            cantEnemies++;
-        });
-
-        enemySpawnTimer.start();
+    public void playMusic(int i) {
+        backgroundMusic.setFile(i);
+        backgroundMusic.play();
+        backgroundMusic.loop();
     }
 
-    private void drawPlayerHealthBar(Graphics2D g2) {
-        if(!player.isHealthBarVisible) return;
 
-        int barWidth = 48; // Ancho de la barra de vida
-        int barHeight = 6; // Altura de la barra de vida
-        int healthWidth = (int) ((player.health / (double) player.maxHealth) * barWidth); // Longitud según la salud
+    public void stopMusic(){
+        backgroundMusic.stop();
+        currentSongIndex = -1;
+    }
 
-        // Dibuja el fondo de la barra de vida
-        g2.setColor(Color.RED);
-        g2.fillRect(player.screenX - 1, player.screenY - 10, barWidth, barHeight); // Mueve la barra 10 píxeles arriba
+    public void playSoundEffect(int i) {
+        soundEffect.setFile(i);
+        soundEffect.play();
+    }
 
-        // Dibuja la barra de vida
-        g2.setColor(Color.GREEN);
-        g2.fillRect(player.screenX - 1, player.screenY - 10, healthWidth, barHeight);
+    public void changeMusic(int i){
+        if(i == currentSongIndex){return;}
 
-        // Dibuja el contorno de la barra de vida
-        g2.setColor(Color.BLACK);
-        g2.drawRect(player.screenX - 1, player.screenY - 10, barWidth, barHeight); // Dibuja el borde
+        stopMusic();
+        playMusic(i);
+        currentSongIndex = i;
     }
 }
