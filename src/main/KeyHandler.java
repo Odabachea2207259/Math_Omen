@@ -170,7 +170,7 @@ public class KeyHandler implements KeyListener {
                     }
                 }
                 case KeyEvent.VK_S -> {
-                    if (pauseScreen.selectedOption < 3) {
+                    if (pauseScreen.selectedOption < 2) {
                         pauseScreen.selectedOption++;
                         gp.playSoundEffect(10);
                     }
@@ -198,7 +198,7 @@ public class KeyHandler implements KeyListener {
                 }
                 case KeyEvent.VK_ENTER -> {
                     switch (pauseScreen.selectedOption) {
-                        case 3 -> {
+                        case 2 -> {
                             pauseScreen.pauseScreenState = 0;
                             pauseScreen.selectedOption = 1;
                         }
