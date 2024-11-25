@@ -200,7 +200,7 @@ public class UI {
         public void drawScoreboardScreen(){
 
             g2.setColor(Color.white);
-            g2.setFont(g2.getFont().deriveFont(32F));
+            g2.setFont(g2.getFont().deriveFont(50F));
 
             if (backgroundImage != null) {
                 g2.drawImage(backgroundImage, 0, 0, gp.screenWidth, gp.screenHeight, null);
@@ -209,6 +209,15 @@ public class UI {
                 g2.setColor(new Color(0, 0, 0));
                 g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
             }
+
+            int alpha = 200;
+            Color overlayColor = new Color(0, 0, 0, alpha);
+            g2.setColor(overlayColor);
+            g2.fillRoundRect(gp.screenWidth / 4, 20, gp.screenWidth / 2, 650, 40, 40);
+
+            g2.setColor(Color.white);
+            g2.setStroke(new BasicStroke(6));
+            g2.drawRoundRect(gp.screenWidth / 4, 20, gp.screenWidth / 2, 650, 40, 40);
 
             int frameX = gp.tileSize*6;
             int frameY = gp.tileSize;
@@ -225,6 +234,8 @@ public class UI {
             g2.drawString(text,textX,textY);
 
             textX = frameX + gp.tileSize;
+
+            g2.setFont(g2.getFont().deriveFont(32F));
 
             for(User users : gp.users){
                 g2.setColor(colors.get(cant));
