@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-
 public class GamePanel extends JPanel implements Runnable {
 
     final int originalTileSize = 16; //Tamaño de los elementos

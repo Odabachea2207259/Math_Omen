@@ -8,12 +8,13 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 
 public class UI {
     public GamePanel gp;
-    private final Font arial_100, arial_40;
+    private final Font arial_100, arial_40, arial_60;
     private final Font arial_title;
     private Graphics2D g2;
 
@@ -45,6 +46,7 @@ public class UI {
         this.gp = gp;
         this.arial_100 = new Font("Arial", Font.BOLD, 100);
         this.arial_40 = new Font("Arial", Font.PLAIN, 40);
+        this.arial_60 = new Font("Arial", Font.PLAIN, 60);
         this.arial_title = new Font("Arial", Font.BOLD, 120);
 
         // Cargar la imagen de fondo
@@ -589,6 +591,14 @@ public class UI {
                 int y = 140;
                 g2.drawString(message, x, y);
 
+                g2.setFont(arial_60);
+                g2.setColor(Color.WHITE);
+                String messageB = "Enter initials:";
+                textLength = (int) g2.getFontMetrics().getStringBounds(messageB, g2).getWidth();
+
+                x = gp.screenWidth / 2 - textLength / 2;
+                g2.drawString(messageB, x, y + 200);
+
                 //registerScreen.draw();
             }
         }
@@ -599,7 +609,7 @@ public class UI {
         public int selectedOption = 0;
         public int selectedLetter = 95;
         public boolean loaded = false;
-        public char []initials = {'_', '_', '_'};
+        public char []initials = {'A', 'A', 'A'};
 
 
         public void load() {
@@ -608,9 +618,7 @@ public class UI {
                 selectedOption = 0;
                 selectedLetter = 95;
 
-                for (int i = 0; i < initials.length; i++) {
-                    initials[i] = '_';
-                }
+                Arrays.fill(initials, 'A');
                 loaded = true;
             }
         }
@@ -626,17 +634,18 @@ public class UI {
                 g2.setColor(overlayColor);
                 g2.fillRoundRect(gp.screenWidth / 4, gp.screenHeight / 4, gp.screenWidth / 2, 400, 40, 40);
 
-                g2.setFont(arial_40);
+                g2.setFont(arial_60);
 
                 String abc = new String(initials);
 
                 int x = getXforCenteredText(abc);
-                int y = gp.screenHeight / 2 - 100;
+                int y = gp.screenHeight / 2 + 60;
 
                 g2.setColor(Color.WHITE);
                 g2.drawString(abc, x, y);
                 
-                drawMenuOption("^", y + 50, selectedOption);
+                drawMenuOption("▲", y + 70, selectedOption);
+
                 messageDisplay.draw();
             }
         }
@@ -654,7 +663,7 @@ public class UI {
         }
 
         public void drawMenuOption(String text, int y, int commandIndex) {
-            int x = getXforCenteredText(text) - 24 + commandIndex * 24;
+            int x = getXforCenteredText(text) + commandIndex * 40 - 40;
             g2.drawString(text, x, y);
         }
 

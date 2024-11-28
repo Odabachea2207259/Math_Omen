@@ -55,7 +55,7 @@ public class Player extends Entity {
 
         alive = true;
         speed = 16;
-        health = 1;
+        health = 25;
         maxHealth = health;
         direction = "up";
         exp = 0;
