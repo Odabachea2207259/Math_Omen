@@ -254,33 +254,35 @@ public class Player extends Entity {
     public void checkClosestEnemy() {
         double closestDistance = Double.MAX_VALUE;
 
-        for (Enemy enemy : gp.enemies) {
-            double distance = Math.hypot(this.worldX - enemy.worldX,this.worldY - enemy.worldY);
-            //System.out.println("Distance: " + distance + " Range " + DETECTION_RANGE);
-            if(distance < DETECTION_RANGE) {
-                if (distance < closestDistance) {
-                    if (enemy != closest) {
-                        closestDistance = distance;
-                        closest = enemy;
-                        dx = closest.worldX - this.worldX;
-                        dy = closest.worldY - this.worldY;
-                        angulo = Math.atan2(dy, dx);
+        synchronized (gp.enemies) {
+            for (Enemy enemy : gp.enemies) {
+                double distance = Math.hypot(this.worldX - enemy.worldX, this.worldY - enemy.worldY);
+                //System.out.println("Distance: " + distance + " Range " + DETECTION_RANGE);
+                if (distance < DETECTION_RANGE) {
+                    if (distance < closestDistance) {
+                        if (enemy != closest) {
+                            closestDistance = distance;
+                            closest = enemy;
+                            dx = closest.worldX - this.worldX;
+                            dy = closest.worldY - this.worldY;
+                            angulo = Math.atan2(dy, dx);
 
-                        bulletX = (int) (this.worldX + 30 * Math.cos(angulo));
-                        bulletY = (int) (this.worldY + 30 * Math.sin(angulo));
-                        if (!closest.alive) {
-                            closest = null;
+                            bulletX = (int) (this.worldX + 30 * Math.cos(angulo));
+                            bulletY = (int) (this.worldY + 30 * Math.sin(angulo));
+                            if (!closest.alive) {
+                                closest = null;
+                            }
                         }
                     }
                 }
-            }
-            if(distance > DETECTION_RANGE) {
-                bulletX = 0;
-                bulletY = 0;
-                if(closest != null){
-                    distance = Math.hypot(this.worldX - closest.worldX, this.worldY - closest.worldY);
-                    if (!closest.alive || distance > DETECTION_RANGE) {
-                        closest = null;
+                if (distance > DETECTION_RANGE) {
+                    bulletX = 0;
+                    bulletY = 0;
+                    if (closest != null) {
+                        distance = Math.hypot(this.worldX - closest.worldX, this.worldY - closest.worldY);
+                        if (!closest.alive || distance > DETECTION_RANGE) {
+                            closest = null;
+                        }
                     }
                 }
             }
@@ -308,6 +310,8 @@ public class Player extends Entity {
 
             gp.ui.setFoo(0);
 
+            gp.checkEnemiesLevel();
+            gp.spawner.checkPlayerLevel();
             gp.gameState = GamePanel.operationState;
         }
     }

@@ -241,4 +241,10 @@ public class GamePanel extends JPanel implements Runnable {
         playMusic(i);
         currentSongIndex = i;
     }
+
+    public void checkEnemiesLevel(){
+        if(player.level % 2 == 0){
+            enemiesMultiplier++;
+        }
+    }
 }

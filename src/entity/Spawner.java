@@ -10,6 +10,7 @@ public class Spawner {
     GamePanel gp;
     Random randomNumbers = new Random(); //SE NECESITA GG
     Timer enemySpawnTimer;
+    int cant = 1;
 
     public Spawner(GamePanel gp) {
         this.gp = gp;
@@ -38,9 +39,11 @@ public class Spawner {
             }
 
             synchronized (gp.enemies) {
-                Enemy newEnemy = EnemyFactory.createRandomEnemy(gp,startX,startY,gp.enemiesMultiplier);
-                gp.enemies.add(newEnemy);
-                System.out.println(newEnemy + "\n");
+                for(int i = 0; i < cant; i++) {
+                    Enemy newEnemy = EnemyFactory.createRandomEnemy(gp, startX, startY, gp.enemiesMultiplier);
+                    gp.enemies.add(newEnemy);
+                    System.out.println(newEnemy + "\n");
+                }
                 System.out.println(gp.player + "\n");
             }
 
@@ -52,5 +55,11 @@ public class Spawner {
 
     public void stopEnemySpawner() {
         enemySpawnTimer.stop();
+    }
+
+    public void checkPlayerLevel(){
+        if(gp.player.level % 5 == 0){
+            cant++;
+        }
     }
 }

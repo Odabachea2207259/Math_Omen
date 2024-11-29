@@ -11,7 +11,7 @@ public class Add extends Enemy {
         super(gamePanel, startX, startY);
         this.nombre = "Suma";
         this.speed = 3;
-        this.damage = 1 * multiplier;
+        this.damage = multiplier;
         this.exp = 1;
         this.health = 2 * multiplier;
         this.growl = 4;
