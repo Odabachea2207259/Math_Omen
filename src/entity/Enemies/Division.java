@@ -3,9 +3,6 @@ package entity.Enemies;
 import entity.Enemy;
 import main.GamePanel;
 
-//import javax.imageio.ImageIO;
-//import java.io.IOException;
-
 public class Division extends Enemy {
     public Division(GamePanel gamePanel, int startX, int startY, int multiplier) {
         super(gamePanel, startX, startY);

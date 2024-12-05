@@ -2,14 +2,11 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.UI;
 import objects.OBJ_Bullet;
-import serialization.User;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.Scanner;
 
 public class Player extends Entity {
 

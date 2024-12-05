@@ -3,9 +3,6 @@ package entity.Enemies;
 import entity.Enemy;
 import main.GamePanel;
 
-//import javax.imageio.ImageIO;
-//import java.io.IOException;
-
 public class Add extends Enemy {
     public Add(GamePanel gamePanel, int startX, int startY, int multiplier) {
         super(gamePanel, startX, startY);

@@ -181,22 +181,22 @@ public class UI {
 
             g2.setFont(arial_40);
 
-            drawMenuOption("NEW GAME", y + gp.tileSize * 6, 0);
-            drawMenuOption("SCOREBOARD", y + gp.tileSize * 8, 1);
-            drawMenuOption("QUIT", y + gp.tileSize * 10, 2);
+            drawMenuOption("NUEVO JUEGO", y + gp.tileSize * 6, 0);
+            drawMenuOption("PUNTUACIONES", y + gp.tileSize * 8, 1);
+            drawMenuOption("SALIR", y + gp.tileSize * 10, 2);
         }
 
         public void drawCharacterSelection() {
             g2.setFont(g2.getFont().deriveFont(42F));
             g2.setColor(Color.white);
 
-            String title = "Select your character";
+            String title = "Escoge tu personaje";
             int x = getXforCenteredText(title);
             int y = gp.tileSize * 3;
             g2.drawString(title, x, y);
 
-            drawMenuOption("Boy", y + gp.tileSize * 3, 0);
-            drawMenuOption("Girl", y + gp.tileSize * 6, 1);
+            drawMenuOption("Chico", y + gp.tileSize * 3, 0);
+            drawMenuOption("Chica", y + gp.tileSize * 6, 1);
         }
 
         public void drawScoreboardScreen(){
@@ -230,7 +230,7 @@ public class UI {
             int textX;
             int textY;
 
-            String text = "SCOREBOARDS";
+            String text = "PUNTUACIONES";
             textX = getXforCenteredText(text);
             textY = frameY + gp.tileSize;
             g2.drawString(text,textX,textY);
@@ -310,7 +310,7 @@ public class UI {
             // Título "PAUSE"
             g2.setFont(arial_100);
             g2.setColor(Color.WHITE);
-            String text = "PAUSE";
+            String text = "PAUSA";
             int x = getXforCenteredText(text);
             int y = getYforCenteredText(g2, text, arial_100);
             g2.drawString(text, x, y);
@@ -362,7 +362,7 @@ public class UI {
             int textX;
             int textY;
 
-            String text = "OPTIONS";
+            String text = "OPCIONES";
             textX = getXforCenteredText(text);
             textY = frameY + gp.tileSize;
             g2.drawString(text,textX,textY);
@@ -370,11 +370,11 @@ public class UI {
             textX = frameX + gp.tileSize;
             textY += gp.tileSize*2;
             g2.setColor(selectedOption == 0 ? Color.YELLOW : Color.WHITE);
-            g2.drawString("Music",textX,textY);
+            g2.drawString("Musica",textX,textY);
 
             textY += gp.tileSize*2;
             g2.setColor(selectedOption == 1 ? Color.YELLOW : Color.WHITE);
-            g2.drawString("Sound Effect",textX,textY);
+            g2.drawString("Efectos de sonido",textX,textY);
 
             textY += gp.tileSize*2;
             g2.setColor(selectedOption == 2 ? Color.YELLOW : Color.WHITE);
@@ -413,7 +413,8 @@ public class UI {
         long resultTime = -1;
         boolean resultDisplayed = false;
         public boolean wrong = false;
-        private static final int MESSAGE_DISPLAY_TIME = 500;
+        private int index,x,y;
+        private static final int MESSAGE_DISPLAY_TIME = 1000;
 
         public void initialize(double correctAnswer) {
             this.correctAnswer = correctAnswer;
@@ -423,7 +424,7 @@ public class UI {
             answers[0] = correctAnswer;
             answers[1] = correctAnswer + (random.nextInt(8) + 1);
             answers[2] = correctAnswer - (random.nextInt(8) + 1);
-            shuffleArray(answers);
+            index = shuffleArray(answers);
             selectedOption = 0;
             resultMessage = "";
             resultTime = -1;
@@ -442,8 +443,8 @@ public class UI {
 
             g2.setFont(arial_40);
 
-            int x = getXforCenteredText(op);
-            int y = gp.screenHeight / 2 - 100;
+            x = getXforCenteredText(op);
+            y = gp.screenHeight / 2 - 100;
 
             g2.setColor(Color.WHITE);
             g2.drawString(op, x, y);
@@ -458,6 +459,13 @@ public class UI {
                     g2.setColor(Color.YELLOW);
                 } else {
                     g2.setColor(Color.WHITE);
+                }
+
+                if(wrong && i == index){
+                    g2.setColor(Color.GREEN);
+                }
+                 else if (wrong){
+                     g2.setColor(Color.RED);
                 }
 
                 g2.drawString(optionText, x, y);
@@ -485,11 +493,11 @@ public class UI {
             boolean correct = isAnswerCorrect();
             if (correct) {
                 // Acción si la respuesta es correcta
-                resultMessage = "CORRECT!!!";
+                resultMessage = "CORRECT0!!!";
                 gp.playSoundEffect(13);
             } else {
                 // Acción si la respuesta es incorrecta
-                resultMessage = "WRONG!!!";
+                resultMessage = "CASI!!!!";
                 gp.playSoundEffect(12);
                 wrong = true;
             }
@@ -498,13 +506,21 @@ public class UI {
             gp.ui.operationScreen.resultDisplayed = true;
         }
 
-        private void shuffleArray(double[] array) {
+        private int shuffleArray(double[] array) {
             for (int i = array.length - 1; i > 0; i--) {
                 int index = (int) (Math.random() * (i + 1));
                 double temp = array[index];
                 array[index] = array[i];
                 array[i] = temp;
             }
+
+            for(int i = 0; i < array.length; i++){
+                if(array[i] == correctAnswer){
+                    return i;
+                }
+            }
+
+            return 0;
         }
 
         public boolean isAnswerCorrect() {
@@ -538,15 +554,15 @@ public class UI {
             final int lineHeight = 64;
 
             //NAMES
-            g2.drawString("Level",textX,textY);
+            g2.drawString("Nivel",textX,textY);
             textY += lineHeight;
-            g2.drawString("Life",textX,textY);
+            g2.drawString("Vida",textX,textY);
             textY += lineHeight;
-            g2.drawString("Damage",textX,textY);
+            g2.drawString("Daño",textX,textY);
             textY += lineHeight;
             g2.drawString("Exp",textX,textY);
             textY += lineHeight + 20;
-            g2.drawString("Projectile",textX,textY);
+            g2.drawString("Proyectil",textX,textY);
 
             //VALUES
             int tailX = (frameX + frameWidth) - 30;
@@ -580,7 +596,7 @@ public class UI {
     // Clase anidada para mostrar mensajes temporales
     public class MessageDisplay {
         private boolean messageOn = true;
-        private String message = "GAME OVER!";
+        private String message = "BIEN HECHO!!";
 
         public void draw() {
             if (messageOn && !gp.player.alive) {
@@ -593,11 +609,17 @@ public class UI {
 
                 g2.setFont(arial_60);
                 g2.setColor(Color.WHITE);
-                String messageB = "Enter initials:";
+                String messageB = "Ingresa tus";
                 textLength = (int) g2.getFontMetrics().getStringBounds(messageB, g2).getWidth();
 
                 x = gp.screenWidth / 2 - textLength / 2;
-                g2.drawString(messageB, x, y + 200);
+                g2.drawString(messageB, x, y + 100);
+
+                messageB = "iniciales:";
+                textLength = (int) g2.getFontMetrics().getStringBounds(messageB, g2).getWidth();
+
+                x = gp.screenWidth / 2 - textLength / 2;
+                g2.drawString(messageB, x, y + 175);
 
                 //registerScreen.draw();
             }
