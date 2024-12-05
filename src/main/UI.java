@@ -370,11 +370,11 @@ public class UI {
             textX = frameX + gp.tileSize;
             textY += gp.tileSize*2;
             g2.setColor(selectedOption == 0 ? Color.YELLOW : Color.WHITE);
-            g2.drawString("Musica",textX,textY);
+            g2.drawString("Música",textX,textY);
 
             textY += gp.tileSize*2;
             g2.setColor(selectedOption == 1 ? Color.YELLOW : Color.WHITE);
-            g2.drawString("Efectos de sonido",textX,textY);
+            g2.drawString("Efectos",textX,textY);
 
             textY += gp.tileSize*2;
             g2.setColor(selectedOption == 2 ? Color.YELLOW : Color.WHITE);
@@ -493,11 +493,11 @@ public class UI {
             boolean correct = isAnswerCorrect();
             if (correct) {
                 // Acción si la respuesta es correcta
-                resultMessage = "CORRECT0!!!";
+                resultMessage = "¡CORRECT0!";
                 gp.playSoundEffect(13);
             } else {
                 // Acción si la respuesta es incorrecta
-                resultMessage = "CASI!!!!";
+                resultMessage = "¡C4SI!";
                 gp.playSoundEffect(12);
                 wrong = true;
             }
